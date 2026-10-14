@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>KID-CONNECT AI | Trợ Lý Trí Tuệ Nhân Tạo Mầm Non - Trường MN Phúc Sơn B</title>
+  <link rel="stylesheet" href="css/style.css?v=2.6">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+</head>
+<body>
+
+  <!-- DẢI THÔNG TIN DỰ THI QUỐC GIA -->
+  <div class="competition-strip">
+    <span class="comp-badge">BẢNG A: MẦM NON & TIỂU HỌC</span>
+    <span>🏆 GIẢI THƯỞNG TIÊN PHONG ỨNG DỤNG AI TRONG GIÁO DỤC VIỆT NAM 2026</span>
+    <span>• Đơn vị phối hợp: Bộ Giáo dục và Đào tạo & Đại học RMIT Việt Nam</span>
+  </div>
+
+  <!-- TOP HEADER -->
+  <header class="app-top-header">
+    <div class="header-inner">
+      <div class="brand-section">
+        <div class="brand-icon-wrap">
+          <span>👶</span>
+          <span class="sparkle-badge">✨</span>
+        </div>
+        <div class="brand-text-col">
+          <h1 class="brand-title">
+            KID-CONNECT AI
+            <span class="brand-tag">MN PHÚC SƠN B</span>
+          </h1>
+          <p class="brand-sub">Trợ lý Trí tuệ Nhân tạo Cá nhân hóa Đánh giá Trẻ & Kết nối Gia đình - Nhà trường</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Nút Mở trên Điện thoại & Mã QR -->
+        <button class="btn-qr-mobile" id="btn-open-mobile-qr" title="Quét mã QR để mở ứng dụng ngay trên điện thoại">
+          <span>📱</span> Dùng Trên ĐT
+        </button>
+
+        <!-- Chế độ Đạo đức AI & Bảo mật thông tin trẻ em -->
+        <div class="privacy-toggle-box" title="Bảo vệ quyền riêng tư của trẻ theo Luật Trẻ em 2016: Ẩn danh nhân thân khi hiển thị">
+          <span>🛡️ Ẩn danh</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-privacy-mode" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <!-- Nút Cài đặt AI Key -->
+        <button class="btn-icon-setting" id="btn-open-settings" title="Cấu hình Google Gemini AI & Chế độ Sư phạm">
+          ⚙️
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <nav class="app-navbar">
+    <div class="nav-tabs-container">
+      <button class="nav-tab-btn active" data-tab="tab-ai-assistant">
+        <span>🎙️</span> 1. Trợ Lý AI & Ghi Nhận
+      </button>
+      <button class="nav-tab-btn" data-tab="tab-card-preview">
+        <span>🎨</span> 2. Thẻ Nhật Ký Số (Canva Style)
+      </button>
+      <button class="nav-tab-btn" data-tab="tab-impact-analytics">
+        <span>📊</span> 3. Báo Cáo Thực Nghiệm
+      </button>
+      <button class="nav-tab-btn" data-tab="tab-competition-dossier">
+        <span>📁</span> 4. Hồ Sơ Dự Thi (Bộ GD&ĐT & RMIT)
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="app-main-layout">
+
+    <!-- ==========================================
+         TAB 1: TRỢ LÝ AI & GHI NHẬN LỚP HỌC
+         ========================================== -->
+    <section class="tab-content-panel active" id="tab-ai-assistant">
+      <div class="assistant-grid-layout">
+        
+        <!-- CỘT TRÁI: DANH SÁCH LỚP & HỌC SINH -->
+        <aside class="sidebar-panel">
+          <div class="sidebar-title-row">
+            <h3 class="sidebar-title">🏫 Lớp Học Của Cô</h3>
+          </div>
+          
+          <select class="custom-select" id="select-class">
+            <!-- Đổ dữ liệu từ data.js -->
+          </select>
+
+          <div class="sidebar-title-row">
+            <h4 class="sidebar-title" style="font-size: 0.95rem;">👶 Danh Sách Trẻ Trong Lớp</h4>
+          </div>
+
+          <div class="student-list-container" id="student-cards-grid">
+            <!-- Render danh sách học sinh -->
+          </div>
+
+          <button type="button" class="btn-add-kid" id="btn-add-student">
+            <span>➕</span> Thêm Bé Mới Vào Lớp
+          </button>
+        </aside>
+
+        <!-- CỘT PHẢI: KHÔNG GIAN LÀM VIỆC CỦA TRỢ LÝ AI -->
+        <div class="assistant-workspace">
+          
+          <!-- THẺ PROFILE BÉ ĐANG CHỌN -->
+          <div class="current-kid-card">
+            <div class="kid-profile-left">
+              <img id="current-student-avatar" src="" alt="Avatar" class="kid-big-avatar">
+              <div class="kid-meta-col">
+                <h2 class="kid-main-name" id="current-student-name">Bé An</h2>
+                <span class="kid-meta-sub" id="current-student-code">Mã: PSB-01 | Khối: 5-6 tuổi</span>
+                <p class="kid-notes-preview" id="current-student-notes">Đặc điểm nổi bật...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- KHỐI NHẬP LIỆU GIỌNG NÓI & GHI CHÚ THÔ -->
+          <div class="observation-input-card">
+            <div class="card-title-row">
+              <h3 class="section-title">
+                <span>🎙️</span> Bước 1: Ghi Nhận Nhanh Biểu Hiện Trong Ngày
+              </h3>
+            </div>
+
+            <!-- Gợi ý kịch bản mẫu mầm non -->
+            <div class="preset-samples-wrap">
+              <div class="preset-label">💡 Kịch bản thực tế mẫu (Bấm thử 1 chạm):</div>
+              <div class="preset-chips-scroll" id="preset-chips-wrap">
+                <!-- Data.js render -->
+              </div>
+            </div>
+
+            <!-- Ô nhập liệu văn bản / giọng nói -->
+            <div class="voice-input-wrapper">
+              <textarea 
+                id="raw-observation-input" 
+                class="voice-textarea" 
+                placeholder="Cô giáo hãy bấm nút micro bên dưới để nói 20-30 giây (hoặc gõ ghi chú tự nhiên). Ví dụ: 'Hôm nay bé biết chia sẻ đồ chơi xếp hình cho bạn, ăn cơm nhanh hết suất nhưng lúc ngủ trưa còn trằn trọc, rất thích nghe truyện cổ tích...'"></textarea>
+            </div>
+
+            <!-- Thanh điều khiển Micro & Chạy AI -->
+            <div class="voice-actions-bar">
+              <div class="mic-btn-wrap">
+                <button type="button" class="btn-mic-pulse" id="btn-voice-mic" title="Bật/Tắt Micro ghi âm tiếng Việt">
+                  🎤
+                </button>
+                <div class="mic-info-col">
+                  <span class="mic-status-label" id="mic-status-text">Bấm để nói ghi chú bằng giọng nói (30 giây)</span>
+                  <div class="voice-wave-container" id="voice-wave-animation">
+                    <span class="wave-bar"></span>
+                    <span class="wave-bar"></span>
+                    <span class="wave-bar"></span>
+                    <span class="wave-bar"></span>
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" class="btn-run-ai-action" id="btn-run-ai">
+                <span>🚀</span> AI Phân Tích & Chuẩn Hóa Sư Phạm
+              </button>
+            </div>
+
+            <!-- Trạng thái xử lý -->
+            <div class="ai-processing-status" id="ai-processing-status">
+              <div class="spinner"></div>
+              <span>Trợ lý KID-CONNECT AI đang đối chiếu chuẩn 5 lĩnh vực GDMN và soạn lời khuyên gia đình...</span>
+            </div>
+          </div>
+
+          <!-- KHỐI KẾT QUẢ SƯ PHẠM (HUMAN-IN-THE-LOOP CHO PHÉP CÔ CHỈNH SỬA) -->
+          <div class="ai-result-panel" id="ai-result-panel">
+            <div class="ai-result-header">
+              <h3 class="section-title">
+                <span>🧠</span> Bước 2: Chuẩn Hóa 5 Lĩnh Vực GDMN & Lời Khuyên Gia Đình
+              </h3>
+              <span class="engine-badge" id="ai-engine-used-badge">⚡ Sẵn sàng phân tích</span>
+            </div>
+
+            <!-- 5 Lĩnh vực phát triển GDMN của Bộ GD&ĐT -->
+            <div class="domains-result-grid">
+              
+              <!-- 1. Thể chất -->
+              <div class="domain-field-card">
+                <div class="domain-field-header">
+                  <span class="field-label">🏃‍♂️ Phát Triển Thể Chất</span>
+                  <select class="rating-select" id="rating-the-chat">
+                    <option value="5">⭐⭐⭐⭐⭐ (Xuất sắc)</option>
+                    <option value="4" selected>⭐⭐⭐⭐ (Đạt tốt)</option>
+                    <option value="3">⭐⭐⭐ (Cần cố gắng)</option>
+                  </select>
+                </div>
+                <textarea id="res-the-chat" class="domain-textarea" placeholder="Nhận xét vận động, dinh dưỡng, giấc ngủ..."></textarea>
+              </div>
+
+              <!-- 2. Nhận thức -->
+              <div class="domain-field-card">
+                <div class="domain-field-header">
+                  <span class="field-label">🧩 Phát Triển Nhận Thức</span>
+                  <select class="rating-select" id="rating-nhan-thuc">
+                    <option value="5" selected>⭐⭐⭐⭐⭐ (Xuất sắc)</option>
+                    <option value="4">⭐⭐⭐⭐ (Đạt tốt)</option>
+                    <option value="3">⭐⭐⭐ (Cần cố gắng)</option>
+                  </select>
+                </div>
+                <textarea id="res-nhan-thuc" class="domain-textarea" placeholder="Nhận xét khám phá, toán, tư duy..."></textarea>
+              </div>
+
+              <!-- 3. Ngôn ngữ -->
+              <div class="domain-field-card">
+                <div class="domain-field-header">
+                  <span class="field-label">🗣️ Phát Triển Ngôn Ngữ</span>
+                  <select class="rating-select" id="rating-ngon-ngu">
+                    <option value="5" selected>⭐⭐⭐⭐⭐ (Xuất sắc)</option>
+                    <option value="4">⭐⭐⭐⭐ (Đạt tốt)</option>
+                    <option value="3">⭐⭐⭐ (Cần cố gắng)</option>
+                  </select>
+                </div>
+                <textarea id="res-ngon-ngu" class="domain-textarea" placeholder="Nhận xét vốn từ, diễn đạt, giao tiếp..."></textarea>
+              </div>
+
+              <!-- 4. Tình cảm & KNXH -->
+              <div class="domain-field-card">
+                <div class="domain-field-header">
+                  <span class="field-label">💖 Tình Cảm & KN Xã Hội</span>
+                  <select class="rating-select" id="rating-tinh-cam">
+                    <option value="5" selected>⭐⭐⭐⭐⭐ (Xuất sắc)</option>
+                    <option value="4">⭐⭐⭐⭐ (Đạt tốt)</option>
+                    <option value="3">⭐⭐⭐ (Cần cố gắng)</option>
+                  </select>
+                </div>
+                <textarea id="res-tinh-cam" class="domain-textarea" placeholder="Nhận xét chia sẻ, tự phục vụ, hợp tác..."></textarea>
+              </div>
+
+              <!-- 5. Thẩm mỹ -->
+              <div class="domain-field-card" style="grid-column: span 2;">
+                <div class="domain-field-header">
+                  <span class="field-label">🎨 Phát Triển Thẩm Mỹ</span>
+                  <select class="rating-select" id="rating-tham-my">
+                    <option value="5">⭐⭐⭐⭐⭐ (Xuất sắc)</option>
+                    <option value="4" selected>⭐⭐⭐⭐ (Đạt tốt)</option>
+                    <option value="3">⭐⭐⭐ (Cần cố gắng)</option>
+                  </select>
+                </div>
+                <textarea id="res-tham-my" class="domain-textarea" placeholder="Nhận xét âm nhạc, tạo hình, cảm thụ nghệ thuật..."></textarea>
+              </div>
+
+            </div>
+
+            <!-- Khối Lời Nhắn Phụ Huynh & Home Connection Tip -->
+            <div class="callouts-row">
+              <div class="callout-box callout-parent-msg">
+                <div class="callout-header">
+                  <span class="callout-title">💌 Lời Cô Nhắn Gửi Phụ Huynh</span>
+                  <button type="button" class="btn-tts-speak" id="btn-speak-message" title="Nghe cô đọc nhận xét">
+                    🔊 Nghe Giọng Đọc
+                  </button>
+                </div>
+                <textarea id="res-parent-message" class="callout-textarea" placeholder="Lời khích lệ ấm áp từ cô giáo..."></textarea>
+              </div>
+
+              <div class="callout-box callout-home-tip">
+                <div class="callout-header">
+                  <span class="callout-title">🌙 Bí Kíp Cùng Con Tối Nay (10 - 15 Phút)</span>
+                </div>
+                <textarea id="res-home-tip" class="callout-textarea" placeholder="Hoạt động/trò chơi tương tác giữa cha mẹ và con tại nhà..."></textarea>
+              </div>
+            </div>
+
+            <!-- Footer Hành Động -->
+            <div class="result-actions-footer">
+              <button type="button" class="btn-view-card-cta" id="btn-view-card">
+                <span>🎨</span> Bước 3: Xem & Xuất Thẻ Nhật Ký Số
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         TAB 2: THẺ NHẬT KÝ SỐ (CANVA STYLE)
+         ========================================== -->
+    <section class="tab-content-panel" id="tab-card-preview">
+      <div class="card-generator-layout">
+        
+        <!-- BẢNG ĐIỀU KHIỂN & CHỌN MẪU THIẾT KẾ -->
+        <div class="card-controls-panel">
+          <h3 class="section-title" style="font-size: 1.05rem;">
+            <span>🎨</span> Mẫu Thẻ Canva
+          </h3>
+
+          <div class="theme-options-grid">
+            <button type="button" class="theme-selector-btn active" data-theme="theme-rainbow">
+              🌈 Cầu Vồng Tươi Sáng
+            </button>
+            <button type="button" class="theme-selector-btn" data-theme="theme-meadow">
+              🌱 Khu Vườn Khám Phá
+            </button>
+            <button type="button" class="theme-selector-btn" data-theme="theme-ocean">
+              🌊 Đại Dương Kỳ Diệu
+            </button>
+            <button type="button" class="theme-selector-btn" data-theme="theme-dream">
+              ✨ Khu Rừng Cổ Tích
+            </button>
+          </div>
+
+          <hr style="border: none; border-top: 1px solid var(--border-color);">
+
+          <h3 class="section-title" style="font-size: 1.05rem;">
+            <span>📤</span> Xuất Bản & Gửi Phụ Huynh
+          </h3>
+
+          <div class="export-actions-list">
+            <button type="button" class="btn-export-main btn-export-png" id="btn-download-png">
+              <span>📥</span> Tải Ảnh PNG (Gửi Zalo)
+            </button>
+            <button type="button" class="btn-export-main btn-copy-zalo" id="btn-copy-zalo">
+              <span>📋</span> Sao Chép Tin Nhắn Zalo
+            </button>
+            <button type="button" class="btn-export-main btn-print" id="btn-print-card">
+              <span>🖨️</span> In Thẻ / Lưu PDF
+            </button>
+          </div>
+
+          <div style="background: #eff6ff; padding: 12px; border-radius: var(--radius-md); font-size: 0.8rem; color: #1e40af; line-height: 1.4;">
+            💡 <strong>Mẹo sư phạm:</strong> Ảnh xuất có độ phân giải cao chuẩn 2x, tải về gửi thẳng vào Zalo cá nhân của phụ huynh tạo ấn tượng vô cùng chuyên nghiệp và ấm áp!
+          </div>
+        </div>
+
+        <!-- KHUNG CANVAS XEM TRỰC TIẾP -->
+        <div class="card-canvas-viewport">
+          <div id="growth-card-preview" class="growth-card theme-rainbow">
+            <!-- Render từ card_generator.js -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         TAB 3: BÁO CÁO THỰC NGHIỆM & TÁC ĐỘNG
+         ========================================== -->
+    <section class="tab-content-panel" id="tab-impact-analytics">
+      
+      <!-- CÁC CHỈ SỐ NỔI BẬT THEO ĐỀ ÁN -->
+      <div class="metrics-hero-grid">
+        <div class="metric-card-box">
+          <div class="metric-icon-bubble metric-time">⏱️</div>
+          <div class="metric-info-col">
+            <div class="metric-big-number">-83.3%</div>
+            <div class="metric-label-text">Thời gian làm sổ sách</div>
+            <span class="metric-sub-badge">Từ 12h/tuần xuống 2h/tuần</span>
+          </div>
+        </div>
+
+        <div class="metric-card-box">
+          <div class="metric-icon-bubble metric-connect">📈</div>
+          <div class="metric-info-col">
+            <div class="metric-big-number">94.7%</div>
+            <div class="metric-label-text">Tương tác phụ huynh</div>
+            <span class="metric-sub-badge">Tăng từ mức 38.5% trước đây</span>
+          </div>
+        </div>
+
+        <div class="metric-card-box">
+          <div class="metric-icon-bubble metric-home">🏡</div>
+          <div class="metric-info-col">
+            <div class="metric-big-number">86.3%</div>
+            <div class="metric-label-text">Gia đình cùng chơi với con</div>
+            <span class="metric-sub-badge">Theo Home Connection Tip</span>
+          </div>
+        </div>
+
+        <div class="metric-card-box">
+          <div class="metric-icon-bubble metric-star">⭐</div>
+          <div class="metric-info-col">
+            <div class="metric-big-number">4.85 / 5</div>
+            <div class="metric-label-text">Chỉ số hài lòng</div>
+            <span class="metric-sub-badge">Đánh giá thực nghiệm tại trường</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BẢNG ĐỐI CHỨNG BEFORE VS AFTER -->
+      <div class="comparison-section-card">
+        <h3 class="section-title">
+          <span>⚖️</span> Ma Trận Đối Chứng: Giải Pháp Truyền Thống vs KID-CONNECT AI
+        </h3>
+        
+        <div class="table-responsive">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Tiêu chí đánh giá</th>
+                <th>Phương pháp truyền thống</th>
+                <th>Giải pháp KID-CONNECT AI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Thời gian nhập liệu</strong></td>
+                <td>Ghi sổ tay thủ công mất 8 - 12 giờ/tuần</td>
+                <td>Ghi chú giọng nói 30 giây/trẻ, chỉ mất 1.5 - 2 giờ/tuần</td>
+              </tr>
+              <tr>
+                <td><strong>Chất lượng lời nhận xét</strong></td>
+                <td>Rập khuôn, đại trà ("bé ngoan, ăn hết suất")</td>
+                <td>Cá nhân hóa 100%, chuẩn hóa theo đúng 5 lĩnh vực GDMN</td>
+              </tr>
+              <tr>
+                <td><strong>Hình thức gửi phụ huynh</strong></td>
+                <td>Sổ giấy cất trong tủ, tin nhắn Zalo chung dễ trôi</td>
+                <td>Infographic sắc màu bắt mắt, sinh động phong cách Canva</td>
+              </tr>
+              <tr>
+                <td><strong>Tư vấn hành động gia đình</strong></td>
+                <td>Không có hoặc chỉ thông báo một chiều</td>
+                <td>Tự động tạo trò chơi 10-15 phút để bố mẹ chơi cùng con tối nay</td>
+              </tr>
+              <tr>
+                <td><strong>Chi phí đầu tư</strong></td>
+                <td>Tốn tiền in ấn sổ sách hàng năm</td>
+                <td><strong>0 đồng</strong> - Tận dụng điện thoại, Web & AI miễn phí</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TRÍCH DẪN NGƯỜI TRONG CUỘC -->
+      <div class="testimonials-grid">
+        <div class="quote-card">
+          <p class="quote-text">
+            "Từ ngày lớp áp dụng KID-CONNECT AI, tối nào đi làm về tôi cũng háo hức xem bản tin tiến bộ của con. Đọc lời gợi ý của cô, hai vợ chồng tôi tối nào cũng cùng bé chơi trò tìm chữ cái trước khi đi ngủ. Con tiến bộ trông thấy!"
+          </p>
+          <div class="quote-author-row">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Parent1" class="quote-avatar" alt="Phụ huynh">
+            <div>
+              <div class="quote-author-name">Chị Nguyễn Thanh Hương</div>
+              <div class="quote-author-role">Phụ huynh học sinh Lớp Mẫu Giáo Lớn A1</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quote-card">
+          <p class="quote-text">
+            "Một sáng kiến chuyển đổi số vô cùng nhân văn và thiết thực. Giải phóng hoàn toàn sức lao động cho giáo viên mầm non nông thôn, giúp các cô dành trọn tâm huyết cho việc chăm sóc và đổi mới phương pháp giáo dục lấy trẻ làm trung tâm."
+          </p>
+          <div class="quote-author-row">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=TeacherHong" class="quote-avatar" alt="Hiệu trưởng">
+            <div>
+              <div class="quote-author-name">Cô Nguyễn Thị Hồng</div>
+              <div class="quote-author-role">Hiệu trưởng Trường Mầm non Phúc Sơn B</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==========================================
+         TAB 4: HỒ SƠ DỰ THI RMIT & BỘ GD&ĐT
+         ========================================== -->
+    <section class="tab-content-panel" id="tab-competition-dossier">
+      <div class="dossier-layout">
+        
+        <!-- HERO BANNER -->
+        <div class="dossier-hero-card">
+          <h2 class="dossier-hero-title">GIẢI THƯỞNG TIÊN PHONG ỨNG DỤNG AI TRONG GIÁO DỤC VIỆT NAM 2026</h2>
+          <p class="dossier-hero-desc">
+            Dự án: <strong>KID-CONNECT AI</strong> • Bảng A (Khối Mầm non & Tiểu học) • Đơn vị: Trường Mầm non Phúc Sơn B • Đơn vị tổ chức: Cục Nhà giáo & Cán bộ Quản lý Giáo dục (Bộ GD&ĐT) & Đại học RMIT Việt Nam.
+          </p>
+          
+          <div class="dossier-links-bar">
+            <a href="https://www.canva.com/design/DAHX8n0K3Eg/m-5TyXYutoaNpb9vqQVfeQ/edit" target="_blank" class="btn-canva-external">
+              <span>📊</span> Mở Mẫu Slide Canva (DAHX8n0K3Eg)
+            </a>
+            <a href="https://www.canva.com/design/DAHX8izuwG0/IHnb5H7RXv3gR_rsUFUDIA/edit" target="_blank" class="btn-canva-external">
+              <span>🖼️</span> Mở Mẫu Poster Canva (DAHX8izuwG0)
+            </a>
+            <a href="https://www.ieeai.net/giaithuong" target="_blank" class="btn-canva-external" style="background: #facc15; color: #1e3a8a;">
+              <span>🌐</span> Cổng Nộp Bài: ieeai.net/giaithuong
+            </a>
+          </div>
+        </div>
+
+        <!-- 3 SẢN PHẨM BẮT BUỘC TRONG HỒ SƠ DỰ THI -->
+        <div class="dossier-sections-grid">
+          
+          <!-- Sản phẩm 1 & 2 -->
+          <div class="dossier-box">
+            <h3><span>📑</span> Cấu Trúc 10 Slide Thuyết Trình Chuẩn Mẫu</h3>
+            <ul style="padding-left: 20px; line-height: 1.8; font-size: 0.88rem; color: #334155;">
+              <li><strong>Slide 1:</strong> Tiêu đề sản phẩm & thông tin tác giả Trường MN Phúc Sơn B.</li>
+              <li><strong>Slide 2:</strong> Dàn ý bài trình bày (Outline 7 phần).</li>
+              <li><strong>Slide 3:</strong> Bối cảnh & 3 điểm nghẽn thực tế trường mầm non.</li>
+              <li><strong>Slide 4:</strong> Ý tưởng & mô hình giải pháp KID-CONNECT AI.</li>
+              <li><strong>Slide 5:</strong> Cách thực hiện: Quy trình 3 bước & Prompt Master.</li>
+              <li><strong>Slide 6:</strong> Kết quả thực nghiệm định lượng (Giảm 83.3% thời gian).</li>
+              <li><strong>Slide 7:</strong> So sánh Before vs After (Giải pháp truyền thống vs AI).</li>
+              <li><strong>Slide 8:</strong> Tính bền vững, chi phí 0 đồng & Đạo đức AI.</li>
+              <li><strong>Slide 9:</strong> Định hướng tương lai & mở rộng sang cấp Tiểu học.</li>
+              <li><strong>Slide 10:</strong> Lời cảm ơn & Thông điệp kết.</li>
+            </ul>
+          </div>
+
+          <!-- Video Clip 5 phút & Cam kết Đạo đức AI -->
+          <div class="dossier-box">
+            <h3><span>🎬</span> Kịch Bản Video Thuyết Minh (4:45 - 5:00)</h3>
+            <div class="timeline-list">
+              <div class="timeline-item">
+                <span class="timeline-dot"></span>
+                <div><strong>00:00 - 00:30 (30s):</strong> Thực trạng quá tải sổ sách của cô giáo mầm non cuối ngày.</div>
+              </div>
+              <div class="timeline-item">
+                <span class="timeline-dot"></span>
+                <div><strong>00:31 - 01:15 (45s):</strong> Giới thiệu Trợ lý thông minh KID-CONNECT AI.</div>
+              </div>
+              <div class="timeline-item">
+                <span class="timeline-dot"></span>
+                <div><strong>01:16 - 02:30 (74s):</strong> Thao tác ghi hình Live App: Giọng nói -> 5 Lĩnh vực -> Xuất thẻ Infographic.</div>
+              </div>
+              <div class="timeline-item">
+                <span class="timeline-dot"></span>
+                <div><strong>02:31 - 03:45 (75s):</strong> Cảm xúc phụ huynh khi nhận bản tin và chơi cùng con tại nhà.</div>
+              </div>
+              <div class="timeline-item">
+                <span class="timeline-dot"></span>
+                <div><strong>03:46 - 05:00 (75s):</strong> Số liệu thực nghiệm, phỏng vấn Hiệu trưởng & lời chào kết.</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 18px; padding: 12px; background: #fdf2f8; border-radius: var(--radius-md); border-left: 4px solid #db2777; font-size: 0.82rem; color: #831843;">
+              🛡️ <strong>Cam kết Đạo đức AI:</strong> Tuân thủ nghiêm ngặt Luật Trẻ em 2016. Tuyệt đối không lưu trữ dữ liệu nhân thân nhạy cảm lên máy chủ công cộng. Giáo viên giữ quyền kiểm duyệt 100% nội dung.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       MODAL 1: CẤU HÌNH AI & GEMINI SETTINGS
+       ========================================== -->
+  <div class="modal-backdrop" id="settings-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">⚙️ Cấu Hình Trợ Lý KID-CONNECT AI</h3>
+        <button class="btn-close-modal" id="btn-close-settings">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Chế độ phân tích AI:</label>
+          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: var(--radius-md); font-size: 0.85rem; color: #166534;">
+            ✅ <strong>Smart Pedagogical Rules Engine (Khuyên dùng):</strong> Luôn hoạt động miễn phí 100%, không cần kết nối mạng, chuẩn hóa chính xác theo 5 lĩnh vực mầm non của Bộ GD&ĐT Việt Nam.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Google Gemini API Key (Tùy chọn - Dành cho AI trực tuyến):</label>
+          <input type="password" id="input-gemini-key" class="form-input" placeholder="Dán Gemini API Key của thầy/cô vào đây (nếu có)">
+          <span class="form-helper">Nếu để trống, ứng dụng sẽ chạy ở chế độ Sư phạm Offline thông minh.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Mô hình Gemini:</label>
+          <select id="select-gemini-model" class="custom-select">
+            <option value="gemini-2.5-flash" selected>Gemini 2.5 Flash (Tốc độ cao & Thông minh nhất)</option>
+            <option value="gemini-1.5-flash">Gemini 1.5 Flash (Ổn định)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-modal-cancel" id="btn-cancel-settings">Đóng</button>
+        <button type="button" class="btn-modal-save" id="btn-save-settings">Lưu Cấu Hình</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 2: THÊM HỌC SINH MỚI
+       ========================================== -->
+  <div class="modal-backdrop" id="student-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">👶 Thêm Bé Mới Vào Lớp</h3>
+        <button class="btn-close-modal" id="btn-close-student-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Họ và tên đầy đủ của bé:</label>
+          <input type="text" id="new-student-name" class="form-input" placeholder="Ví dụ: Lê Hoàng Nam">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tên gọi thân mật ở nhà / ở lớp:</label>
+          <input type="text" id="new-student-nickname" class="form-input" placeholder="Ví dụ: Bé Bo, Bé Nam">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Đặc điểm, tính cách hoặc lưu ý của bé:</label>
+          <textarea id="new-student-notes" class="form-input" style="min-height: 70px;" placeholder="Ví dụ: Thích vẽ tranh, ăn ngoan, hơi nhút nhát..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-modal-save" id="btn-save-new-student">Lưu Bé Mới</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 3: QUÉT MÃ QR DÙNG TRÊN ĐIỆN THOẠI
+       ========================================== -->
+  <div class="modal-backdrop" id="qr-modal">
+    <div class="modal-box" style="text-align: center;">
+      <div class="modal-header">
+        <h3 class="modal-title">📱 Quét Mã Mở App Trên Điện Thoại</h3>
+        <button class="btn-close-modal" id="btn-close-qr-modal">&times;</button>
+      </div>
+      <div class="modal-body" style="align-items: center; padding: 20px;">
+        <div style="background: #ffffff; border: 2px dashed #6366f1; padding: 12px; border-radius: 16px; display: inline-block; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+          <img src="assets/QR_Code_KID_CONNECT_AI.png" alt="Mã QR KID-CONNECT AI" style="width: 220px; height: 220px; border-radius: 10px; display: block;" onerror="this.src='../QR_Code_KID_CONNECT_AI.png'">
+        </div>
+        <p style="font-size: 0.95rem; color: #1e293b; font-weight: 800; margin-top: 14px;">
+          Dùng <strong>Camera Điện Thoại</strong> hoặc <strong>Zalo</strong> quét mã trên!
+        </p>
+        <div style="background: #eff6ff; padding: 10px 14px; border-radius: 10px; font-size: 0.85rem; color: #1d4ed8; word-break: break-all; margin-top: 8px;">
+          🔗 Hoặc gõ địa chỉ trên điện thoại: <br><strong id="qr-link-text">http://10.10.10.27:8080/kid_connect_app/index.html</strong>
+        </div>
+        <p style="font-size: 0.78rem; color: #64748b; margin-top: 6px;">
+          💡 <em>Lưu ý: Điện thoại và máy tính cần kết nối cùng một mạng Wi-Fi.</em>
+        </p>
+      </div>
+      <div class="modal-footer" style="justify-content: center;">
+        <button type="button" class="btn-modal-save" id="btn-close-qr-footer">Đã Quét Xong</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- THƯ VIỆN BỔ TRỢ: HTML2CANVAS ĐỂ XUẤT ẢNH PNG CANVA -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- MÃ NGUỒN ỨNG DỤNG -->
+  <script src="js/data.js?v=2.6"></script>
+  <script src="js/speech.js?v=2.6"></script>
+  <script src="js/ai_engine.js?v=2.6"></script>
+  <script src="js/card_generator.js?v=2.6"></script>
+  <script src="js/app.js?v=2.6"></script>
+
+</body>
+</html>

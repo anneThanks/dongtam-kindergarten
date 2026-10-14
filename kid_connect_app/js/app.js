@@ -1,0 +1,617 @@
+/**
+ * KID-CONNECT AI - Ứng dụng Quản trị & Điều phối chính
+ * Tác giả: Nhóm Dự Án KID-CONNECT AI - Trường Mầm non Phúc Sơn B
+ */
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Trạng thái ứng dụng (State)
+  const state = {
+    classes: JSON.parse(localStorage.getItem("kid_classes")) || DEFAULT_CLASSES,
+    students: JSON.parse(localStorage.getItem("kid_students")) || DEFAULT_STUDENTS,
+    currentClassId: "mg_lon_a1",
+    currentStudentId: "psb_01",
+    isPrivacyMasked: true, // Mặc định BẬT chế độ đạo đức AI ẩn danh dữ liệu trẻ
+    currentTab: "tab-ai-assistant",
+    lastAssessment: null,
+    isListening: false
+  };
+
+  // Khởi tạo giao diện
+  initNavigation();
+  initClassSelector();
+  initStudentSelector();
+  initPresets();
+  initVoiceFeature();
+  initAIAnalysis();
+  initCardControls();
+  initSettingsModal();
+  initResponsibleAIToggle();
+  initStudentModal();
+  initMobileQRModal();
+  renderImpactDashboard();
+
+  // Load học sinh đầu tiên
+  selectStudent(state.currentStudentId);
+
+  // ===================== NAVIGATION TABS =====================
+  function initNavigation() {
+    const navButtons = document.querySelectorAll(".nav-tab-btn");
+    navButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const targetTabId = btn.getAttribute("data-tab");
+        switchTab(targetTabId);
+      });
+    });
+  }
+
+  function switchTab(tabId) {
+    state.currentTab = tabId;
+    document.querySelectorAll(".nav-tab-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.getAttribute("data-tab") === tabId);
+    });
+
+    document.querySelectorAll(".tab-content-panel").forEach(panel => {
+      panel.classList.toggle("active", panel.id === tabId);
+    });
+
+    // Nếu chuyển sang tab Card Preview, tự động render thẻ
+    if (tabId === "tab-card-preview") {
+      updateCardPreview();
+    }
+  }
+
+  // ===================== CLASS & STUDENT SELECTOR =====================
+  function initClassSelector() {
+    const classSelect = document.getElementById("select-class");
+    if (!classSelect) return;
+
+    classSelect.innerHTML = "";
+    state.classes.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c.id;
+      opt.textContent = `${c.name} (${c.teacher})`;
+      if (c.id === state.currentClassId) opt.selected = true;
+      classSelect.appendChild(opt);
+    });
+
+    classSelect.addEventListener("change", (e) => {
+      state.currentClassId = e.target.value;
+      initStudentSelector();
+      // Chọn học sinh đầu tiên của lớp mới
+      const firstStudent = state.students.find(s => s.classId === state.currentClassId);
+      if (firstStudent) selectStudent(firstStudent.id);
+    });
+  }
+
+  function initStudentSelector() {
+    const studentListEl = document.getElementById("student-cards-grid");
+    if (!studentListEl) return;
+
+    studentListEl.innerHTML = "";
+    const filteredStudents = state.students.filter(s => s.classId === state.currentClassId);
+
+    filteredStudents.forEach(st => {
+      const card = document.createElement("div");
+      card.className = `student-pill-item ${st.id === state.currentStudentId ? 'selected' : ''}`;
+      card.setAttribute("data-id", st.id);
+
+      const shortName = st.nickName || st.name;
+      const codeText = state.isPrivacyMasked ? st.code : '';
+      const avatarUrl = state.isPrivacyMasked
+        ? `https://api.dicebear.com/7.x/bottts/svg?seed=${st.code}&backgroundColor=b6e3f4`
+        : (st.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${st.name}&backgroundColor=ffd5dc`);
+
+      const hasAssessed = !!st.latestAssessment;
+
+      card.innerHTML = `
+        <div class="pill-avatar-wrap">
+          <img src="${avatarUrl}" alt="${shortName}" class="pill-avatar" />
+          ${hasAssessed ? '<span class="pill-badge-done">✓</span>' : ''}
+        </div>
+        <div class="pill-info">
+          <span class="pill-name-short">${shortName}</span>
+          <span class="pill-name-code">${codeText}</span>
+        </div>
+      `;
+
+      card.addEventListener("click", () => {
+        selectStudent(st.id);
+      });
+
+      studentListEl.appendChild(card);
+    });
+
+    // Thêm nút Thêm Bé trực tiếp vào cuối băng chuyền
+    const addCard = document.createElement("div");
+    addCard.className = "student-pill-item add-kid-pill-item";
+    addCard.innerHTML = `
+      <div class="pill-avatar-wrap add-kid-avatar-wrap">
+        <span class="add-kid-plus">➕</span>
+      </div>
+      <div class="pill-info">
+        <span class="pill-name-short" style="color: var(--primary); font-weight: 800;">Thêm Bé</span>
+        <span class="pill-name-code">Mới</span>
+      </div>
+    `;
+    addCard.addEventListener("click", () => {
+      document.getElementById("student-modal")?.classList.add("open");
+    });
+    studentListEl.appendChild(addCard);
+  }
+
+  function selectStudent(studentId) {
+    state.currentStudentId = studentId;
+    const student = state.students.find(s => s.id === studentId);
+    if (!student) return;
+
+    // Highlight item được chọn
+    document.querySelectorAll(".student-pill-item").forEach(item => {
+      item.classList.toggle("selected", item.getAttribute("data-id") === studentId);
+    });
+
+    // Cập nhật thông tin bé trên header form
+    const currentNameEl = document.getElementById("current-student-name");
+    const currentCodeEl = document.getElementById("current-student-code");
+    const currentAvatarEl = document.getElementById("current-student-avatar");
+    const currentNotesEl = document.getElementById("current-student-notes");
+
+    const displayName = state.isPrivacyMasked ? `${student.nickName} (${student.code})` : student.name;
+    const avatarUrl = state.isPrivacyMasked
+      ? `https://api.dicebear.com/7.x/bottts/svg?seed=${student.code}&backgroundColor=b6e3f4`
+      : (student.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${student.name}&backgroundColor=ffd5dc`);
+
+    if (currentNameEl) currentNameEl.textContent = displayName;
+    if (currentCodeEl) currentCodeEl.textContent = `Mã bé: ${student.code} | Độ tuổi: ${getClassAge(student.classId)}`;
+    if (currentAvatarEl) currentAvatarEl.src = avatarUrl;
+    if (currentNotesEl) currentNotesEl.textContent = student.notes || "Chưa có ghi chú đặc biệt.";
+
+    // Nếu bé đã có đánh giá sẵn, nạp vào form
+    if (student.latestAssessment) {
+      loadAssessmentToForm(student.latestAssessment);
+      state.lastAssessment = student.latestAssessment;
+    } else {
+      clearAssessmentForm();
+      state.lastAssessment = null;
+    }
+  }
+
+  function getClassAge(classId) {
+    const c = state.classes.find(cls => cls.id === classId);
+    return c ? c.ageGroup : "5-6 tuổi";
+  }
+
+  function getClassName(classId) {
+    const c = state.classes.find(cls => cls.id === classId);
+    return c ? c.name : "Mầm non";
+  }
+
+  // ===================== PRESET SAMPLE OBSERVATIONS =====================
+  function initPresets() {
+    const presetContainer = document.getElementById("preset-chips-wrap");
+    if (!presetContainer) return;
+
+    presetContainer.innerHTML = "";
+    SAMPLE_PRESETS.forEach(preset => {
+      const chip = document.createElement("button");
+      chip.className = "preset-chip-btn";
+      chip.type = "button";
+      chip.innerHTML = preset.title;
+      chip.addEventListener("click", () => {
+        const inputEl = document.getElementById("raw-observation-input");
+        if (inputEl) {
+          inputEl.value = preset.text;
+          inputEl.focus();
+          // Hiệu ứng highlight nhẹ
+          inputEl.classList.add("input-pulsing");
+          setTimeout(() => inputEl.classList.remove("input-pulsing"), 1000);
+        }
+      });
+      presetContainer.appendChild(chip);
+    });
+  }
+
+  // ===================== VOICE RECOGNITION =====================
+  function initVoiceFeature() {
+    const micBtn = document.getElementById("btn-voice-mic");
+    const micStatus = document.getElementById("mic-status-text");
+    const inputEl = document.getElementById("raw-observation-input");
+    const waveEl = document.getElementById("voice-wave-animation");
+
+    if (!micBtn) return;
+
+    micBtn.addEventListener("click", () => {
+      window.kidConnectSpeech.toggleListening(
+        (transcript, isFinal) => {
+          if (inputEl) {
+            inputEl.value = transcript;
+          }
+        },
+        (isListening) => {
+          state.isListening = isListening;
+          if (isListening) {
+            micBtn.classList.add("listening");
+            if (micStatus) micStatus.textContent = "🎙️ Đang lắng nghe cô nói... (Bấm lại để dừng)";
+            if (waveEl) waveEl.style.display = "flex";
+          } else {
+            micBtn.classList.remove("listening");
+            if (micStatus) micStatus.textContent = "🎤 Bấm để nói ghi chú bằng giọng nói (30 giây)";
+            if (waveEl) waveEl.style.display = "none";
+          }
+        },
+        (error) => {
+          alert("Lỗi micro: " + error + ". Thầy/cô có thể gõ chữ trực tiếp vào ô nhé!");
+        }
+      );
+    });
+
+    // Nút Text-to-Speech đọc kết quả
+    const btnSpeakMsg = document.getElementById("btn-speak-message");
+    if (btnSpeakMsg) {
+      btnSpeakMsg.addEventListener("click", () => {
+        const msg = document.getElementById("res-parent-message")?.value;
+        const tip = document.getElementById("res-home-tip")?.value;
+        if (!msg && !tip) {
+          alert("Chưa có nội dung để đọc!");
+          return;
+        }
+        window.kidConnectSpeech.speak(`Lời cô nhắn nhủ: ${msg}. Bí kíp cùng con tại nhà: ${tip}`);
+      });
+    }
+  }
+
+  // ===================== AI ANALYSIS =====================
+  function initAIAnalysis() {
+    const btnAnalyze = document.getElementById("btn-run-ai");
+    const inputEl = document.getElementById("raw-observation-input");
+    const loadingEl = document.getElementById("ai-processing-status");
+    const resultPanel = document.getElementById("ai-result-panel");
+
+    if (!btnAnalyze) return;
+
+    btnAnalyze.addEventListener("click", async () => {
+      const text = inputEl ? inputEl.value.trim() : "";
+      if (!text) {
+        alert("Thầy/cô ơi, vui lòng nói hoặc nhập vài câu nhận xét về bé trước nhé!");
+        inputEl?.focus();
+        return;
+      }
+
+      const student = state.students.find(s => s.id === state.currentStudentId);
+      const ageGroup = getClassAge(state.currentClassId);
+
+      // Hiển thị trạng thái xử lý
+      btnAnalyze.disabled = true;
+      if (loadingEl) loadingEl.style.display = "flex";
+      if (resultPanel) resultPanel.classList.add("analyzing-blur");
+
+      try {
+        const assessment = await window.kidConnectAI.analyzeObservation(text, student, ageGroup);
+        assessment.input = text;
+        state.lastAssessment = assessment;
+
+        // Lưu vào thông tin học sinh
+        if (student) {
+          student.latestAssessment = assessment;
+          saveStudents();
+          initStudentSelector(); // Cập nhật lại huy hiệu xong
+        }
+
+        loadAssessmentToForm(assessment);
+
+        // Hiệu ứng xong
+        setTimeout(() => {
+          if (resultPanel) {
+            resultPanel.classList.remove("analyzing-blur");
+            resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 300);
+
+      } catch (err) {
+        alert("Lỗi phân tích: " + err.message);
+      } finally {
+        btnAnalyze.disabled = false;
+        if (loadingEl) loadingEl.style.display = "none";
+      }
+    });
+
+    // Nút "Cập nhật Thẻ & Xem Trực Quan"
+    const btnGoCard = document.getElementById("btn-view-card");
+    if (btnGoCard) {
+      btnGoCard.addEventListener("click", () => {
+        saveEditedAssessment();
+        switchTab("tab-card-preview");
+      });
+    }
+  }
+
+  function loadAssessmentToForm(data) {
+    const theChat = document.getElementById("res-the-chat");
+    const nhanThuc = document.getElementById("res-nhan-thuc");
+    const ngonNgu = document.getElementById("res-ngon-ngu");
+    const tinhCamXH = document.getElementById("res-tinh-cam");
+    const thamMy = document.getElementById("res-tham-my");
+    const parentMsg = document.getElementById("res-parent-message");
+    const homeTip = document.getElementById("res-home-tip");
+    const engineBadge = document.getElementById("ai-engine-used-badge");
+
+    if (theChat) theChat.value = data.theChat || "";
+    if (nhanThuc) nhanThuc.value = data.nhanThuc || "";
+    if (ngonNgu) ngonNgu.value = data.ngonNgu || "";
+    if (tinhCamXH) tinhCamXH.value = data.tinhCamXH || "";
+    if (thamMy) thamMy.value = data.thamMy || "";
+    if (parentMsg) parentMsg.value = data.parentMessage || "";
+    if (homeTip) homeTip.value = data.homeTip || "";
+
+    if (engineBadge) {
+      engineBadge.textContent = `⚡ Được tạo bởi: ${data.engine || 'KID-CONNECT AI'}`;
+    }
+
+    // Set ratings
+    if (data.ratings) {
+      setRatingSelect("rating-the-chat", data.ratings.theChat || 5);
+      setRatingSelect("rating-nhan-thuc", data.ratings.nhanThuc || 5);
+      setRatingSelect("rating-ngon-ngu", data.ratings.ngonNgu || 5);
+      setRatingSelect("rating-tinh-cam", data.ratings.tinhCamXH || 5);
+      setRatingSelect("rating-tham-my", data.ratings.thamMy || 5);
+    }
+  }
+
+  function setRatingSelect(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.value = String(val);
+  }
+
+  function clearAssessmentForm() {
+    const ids = ["res-the-chat", "res-nhan-thuc", "res-ngon-ngu", "res-tinh-cam", "res-tham-my", "res-parent-message", "res-home-tip"];
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
+    const inputEl = document.getElementById("raw-observation-input");
+    if (inputEl) inputEl.value = "";
+    const engineBadge = document.getElementById("ai-engine-used-badge");
+    if (engineBadge) engineBadge.textContent = "⚡ Sẵn sàng phân tích";
+  }
+
+  function saveEditedAssessment() {
+    if (!state.lastAssessment) {
+      state.lastAssessment = {
+        date: new Date().toISOString().split("T")[0],
+        week: "Tuần 7 - Tháng 10/2026"
+      };
+    }
+
+    state.lastAssessment.theChat = document.getElementById("res-the-chat")?.value || "";
+    state.lastAssessment.nhanThuc = document.getElementById("res-nhan-thuc")?.value || "";
+    state.lastAssessment.ngonNgu = document.getElementById("res-ngon-ngu")?.value || "";
+    state.lastAssessment.tinhCamXH = document.getElementById("res-tinh-cam")?.value || "";
+    state.lastAssessment.thamMy = document.getElementById("res-tham-my")?.value || "";
+    state.lastAssessment.parentMessage = document.getElementById("res-parent-message")?.value || "";
+    state.lastAssessment.homeTip = document.getElementById("res-home-tip")?.value || "";
+
+    state.lastAssessment.ratings = {
+      theChat: parseInt(document.getElementById("rating-the-chat")?.value || "5"),
+      nhanThuc: parseInt(document.getElementById("rating-nhan-thuc")?.value || "5"),
+      ngonNgu: parseInt(document.getElementById("rating-ngon-ngu")?.value || "5"),
+      tinhCamXH: parseInt(document.getElementById("rating-tinh-cam")?.value || "5"),
+      thamMy: parseInt(document.getElementById("rating-tham-my")?.value || "5")
+    };
+
+    const student = state.students.find(s => s.id === state.currentStudentId);
+    if (student) {
+      student.latestAssessment = state.lastAssessment;
+      saveStudents();
+    }
+  }
+
+  // ===================== CARD GENERATOR TAB =====================
+  function initCardControls() {
+    // Theme buttons
+    const themeButtons = document.querySelectorAll(".theme-selector-btn");
+    themeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        themeButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const theme = btn.getAttribute("data-theme");
+        window.kidConnectCard.setTheme(theme);
+      });
+    });
+
+    // Nút Tải ảnh PNG
+    const btnDownloadPNG = document.getElementById("btn-download-png");
+    if (btnDownloadPNG) {
+      btnDownloadPNG.addEventListener("click", () => {
+        const student = state.students.find(s => s.id === state.currentStudentId);
+        const name = state.isPrivacyMasked ? (student?.nickName || "Be") : (student?.name || "Be");
+        window.kidConnectCard.downloadCardAsPNG(name);
+      });
+    }
+
+    // Nút Sao chép Zalo
+    const btnCopyZalo = document.getElementById("btn-copy-zalo");
+    if (btnCopyZalo) {
+      btnCopyZalo.addEventListener("click", () => {
+        const student = state.students.find(s => s.id === state.currentStudentId);
+        const className = getClassName(state.currentClassId);
+        const text = window.kidConnectCard.generateZaloText(state.lastAssessment || {}, student || {}, className, state.isPrivacyMasked);
+
+        navigator.clipboard.writeText(text).then(() => {
+          btnCopyZalo.innerText = "✅ Đã sao chép tin nhắn Zalo!";
+          setTimeout(() => {
+            btnCopyZalo.innerText = "📋 Sao Chép Tin Nhắn Zalo";
+          }, 2500);
+        }).catch(err => {
+          alert("Không thể sao chép tự động: " + err);
+        });
+      });
+    }
+
+    // Nút In Thẻ
+    const btnPrint = document.getElementById("btn-print-card");
+    if (btnPrint) {
+      btnPrint.addEventListener("click", () => {
+        window.print();
+      });
+    }
+  }
+
+  function updateCardPreview() {
+    saveEditedAssessment();
+    const student = state.students.find(s => s.id === state.currentStudentId);
+    const className = getClassName(state.currentClassId);
+
+    const fallbackData = {
+      date: new Date().toISOString().split("T")[0],
+      week: "Tuần 7 - Tháng 10/2026",
+      theChat: "Vận động nhanh nhẹn, tự xúc ăn gọn gàng, hoàn thành tốt các bài tập thể chất.",
+      nhanThuc: "Sáng tạo trong trò chơi lắp ghép, nhận biết tốt các số lượng và màu sắc cơ bản.",
+      ngonNgu: "Diễn đạt lưu loát bằng câu trọn vẹn, hào hứng tham gia các hoạt động đàm thoại.",
+      tinhCamXH: "Biết chia sẻ đồ chơi với bạn, lễ phép chào hỏi cô giáo và giữ gìn trật tự lớp.",
+      thamMy: "Cảm thụ âm nhạc tốt, múa hát nhịp nhàng theo điệu nhạc mầm non tươi vui.",
+      parentMessage: "Bé tuần này rất chăm ngoan và có nhiều tiến bộ vi mô đáng khen ngợi!",
+      homeTip: "Tối nay bố mẹ hãy dành 10 phút đọc truyện và ôm bé ngủ thật ngon nhé!",
+      ratings: { theChat: 5, nhanThuc: 5, ngonNgu: 5, tinhCamXH: 5, thamMy: 5 }
+    };
+
+    const cardData = state.lastAssessment || student?.latestAssessment || fallbackData;
+    window.kidConnectCard.renderCard(cardData, student || { name: "Bé Mầm Non", nickName: "Bé", code: "PS-01" }, className, state.isPrivacyMasked);
+  }
+
+  // ===================== RESPONSIBLE AI TOGGLE =====================
+  function initResponsibleAIToggle() {
+    const toggle = document.getElementById("toggle-privacy-mode");
+    if (!toggle) return;
+
+    toggle.checked = state.isPrivacyMasked;
+    toggle.addEventListener("change", (e) => {
+      state.isPrivacyMasked = e.target.checked;
+      selectStudent(state.currentStudentId);
+      initStudentSelector();
+      if (state.currentTab === "tab-card-preview") {
+        updateCardPreview();
+      }
+    });
+  }
+
+  // ===================== SETTINGS MODAL =====================
+  function initSettingsModal() {
+    const openBtn = document.getElementById("btn-open-settings");
+    const closeBtn = document.getElementById("btn-close-settings");
+    const modal = document.getElementById("settings-modal");
+    const saveBtn = document.getElementById("btn-save-settings");
+    const keyInput = document.getElementById("input-gemini-key");
+    const modelSelect = document.getElementById("select-gemini-model");
+
+    if (openBtn && modal) {
+      openBtn.addEventListener("click", () => {
+        if (keyInput) keyInput.value = window.kidConnectAI.getApiKey();
+        if (modelSelect) modelSelect.value = window.kidConnectAI.modelName;
+        modal.classList.add("open");
+      });
+    }
+
+    if (closeBtn && modal) {
+      closeBtn.addEventListener("click", () => modal.classList.remove("open"));
+    }
+
+    if (saveBtn && modal) {
+      saveBtn.addEventListener("click", () => {
+        const key = keyInput?.value || "";
+        const model = modelSelect?.value || "gemini-2.5-flash";
+        window.kidConnectAI.setApiKey(key);
+        window.kidConnectAI.modelName = model;
+        localStorage.setItem("kid_connect_model", model);
+        modal.classList.remove("open");
+        alert(key ? "✅ Đã lưu cấu hình Google Gemini API thành công!" : "ℹ️ Đã chuyển sang chế độ Smart Pedagogical Engine Offline.");
+      });
+    }
+  }
+
+  // ===================== ADD NEW STUDENT MODAL =====================
+  function initStudentModal() {
+    const btnOpenAdd = document.getElementById("btn-add-student");
+    const modal = document.getElementById("student-modal");
+    const btnClose = document.getElementById("btn-close-student-modal");
+    const btnSave = document.getElementById("btn-save-new-student");
+
+    if (btnOpenAdd && modal) {
+      btnOpenAdd.addEventListener("click", () => modal.classList.add("open"));
+    }
+    if (btnClose && modal) {
+      btnClose.addEventListener("click", () => modal.classList.remove("open"));
+    }
+    if (btnSave && modal) {
+      btnSave.addEventListener("click", () => {
+        const name = document.getElementById("new-student-name")?.value.trim();
+        const nickName = document.getElementById("new-student-nickname")?.value.trim() || name;
+        const notes = document.getElementById("new-student-notes")?.value.trim();
+
+        if (!name) {
+          alert("Vui lòng nhập tên bé!");
+          return;
+        }
+
+        const newId = "psb_" + Date.now();
+        const codeNum = state.students.length + 1;
+        const newStudent = {
+          id: newId,
+          classId: state.currentClassId,
+          name: name,
+          nickName: nickName,
+          gender: "boy",
+          code: `PS-A1-${codeNum < 10 ? '0' + codeNum : codeNum}`,
+          avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${name}&backgroundColor=b6e3f4`,
+          notes: notes,
+          latestAssessment: null
+        };
+
+        state.students.push(newStudent);
+        saveStudents();
+        initStudentSelector();
+        selectStudent(newId);
+        modal.classList.remove("open");
+      });
+    }
+  }
+
+  function saveStudents() {
+    localStorage.setItem("kid_students", JSON.stringify(state.students));
+  }
+
+  // ===================== MOBILE QR CODE MODAL =====================
+  function initMobileQRModal() {
+    const btnOpen = document.getElementById("btn-open-mobile-qr");
+    const modal = document.getElementById("qr-modal");
+    const btnClose = document.getElementById("btn-close-qr-modal");
+    const btnFooterClose = document.getElementById("btn-close-qr-footer");
+    const linkText = document.getElementById("qr-link-text");
+
+    if (btnOpen && modal) {
+      btnOpen.addEventListener("click", () => {
+        // Cập nhật link nếu đang chạy trên host cụ thể
+        const host = window.location.hostname;
+        if (linkText && host && host !== "localhost" && host !== "127.0.0.1") {
+          linkText.textContent = `${window.location.origin}/kid_connect_app/index.html`;
+        }
+        modal.classList.add("open");
+      });
+    }
+
+    if (btnClose && modal) {
+      btnClose.addEventListener("click", () => modal.classList.remove("open"));
+    }
+    if (btnFooterClose && modal) {
+      btnFooterClose.addEventListener("click", () => modal.classList.remove("open"));
+    }
+  }
+
+  // ===================== IMPACT DASHBOARD METRICS =====================
+  function renderImpactDashboard() {
+    // Các số liệu thực nghiệm được lấy trực tiếp từ đề án dự thi
+    const totalStudentsInClass = state.students.filter(s => s.classId === state.currentClassId).length;
+    const assessedCount = state.students.filter(s => s.classId === state.currentClassId && s.latestAssessment).length;
+    
+    const countEl = document.getElementById("metric-assessed-count");
+    if (countEl) countEl.textContent = `${assessedCount} / ${totalStudentsInClass}`;
+  }
+});
