@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initStudentModal();
   initMobileQRModal();
   initAutoResizeFields();
+  checkInAppBrowser();
   renderImpactDashboard();
 
   // Load học sinh đầu tiên
@@ -290,7 +291,21 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         },
         (error) => {
-          alert("Lỗi micro: " + error + ". Thầy/cô có thể gõ chữ trực tiếp vào ô nhé!");
+          if (error === "service-not-allowed" || error === "not-allowed") {
+            const isZalo = /zalo/i.test(navigator.userAgent);
+            const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+            let msg = "Microphone đang bị chặn hoặc chưa được cấp quyền.";
+            if (isZalo || isIOS) {
+              msg = "⚠️ Trình duyệt trong ứng dụng Zalo không hỗ trợ mở Micro trực tiếp.\n\n👉 Cách 1 (Rất tiện): Chạm vào ô ghi chú ➔ Bấm nút Micro 🎙️ ngay trên bàn phím điện thoại để nói tiếng Việt cực chuẩn!\n\n👉 Cách 2: Bấm vào dấu [•••] ở góc trên bên phải màn hình ➔ Chọn 'Mở bằng Safari' (hoặc Chrome) để dùng nút Micro đỏ của app.";
+            } else {
+              msg = "Vui lòng cho phép quyền truy cập Micro trên trình duyệt (hoặc dùng nút Micro trên bàn phím điện thoại nhé)!";
+            }
+            alert(msg);
+          } else if (error === "no-speech") {
+            console.log("Không phát hiện giọng nói.");
+          } else {
+            alert("Lỗi micro: " + error + ".\nThầy/cô có thể dùng nút Micro trên bàn phím điện thoại để nói cực tiện nhé!");
+          }
         }
       );
     });
@@ -807,5 +822,30 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const countEl = document.getElementById("metric-assessed-count");
     if (countEl) countEl.textContent = `${assessedCount} / ${totalStudentsInClass}`;
+  }
+
+  // ===================== IN-APP BROWSER (ZALO / FB) DETECTOR =====================
+  function checkInAppBrowser() {
+    const ua = navigator.userAgent || navigator.vendor || window.opera || "";
+    const isZalo = /zalo/i.test(ua);
+    const isFB = /fbav|facebook/i.test(ua);
+    const isInApp = isZalo || isFB;
+
+    if (isInApp && !sessionStorage.getItem("hide_inapp_banner")) {
+      const banner = document.createElement("div");
+      banner.className = "inapp-browser-banner";
+      banner.innerHTML = `
+        <div class="inapp-banner-content">
+          <span>💡 Bạn đang mở trong Zalo: Bấm <strong>•••</strong> góc trên ➔ Chọn <strong>"Mở bằng Safari / Chrome"</strong> để dùng trọn vẹn Micro & Tải ảnh! Hoặc bấm nút Micro 🎙️ trên bàn phím để nói nhé.</span>
+          <button type="button" class="btn-close-inapp" title="Đóng">&times;</button>
+        </div>
+      `;
+      document.body.prepend(banner);
+
+      banner.querySelector(".btn-close-inapp")?.addEventListener("click", () => {
+        banner.remove();
+        sessionStorage.setItem("hide_inapp_banner", "1");
+      });
+    }
   }
 });

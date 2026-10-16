@@ -2914,4 +2914,41 @@ input:checked + .slider:before {
   }
 }
 
+/* In-App Browser (Zalo / FB) Warning Banner */
+.inapp-browser-banner {
+  background: #fef3c7;
+  border-bottom: 1px solid #fde68a;
+  color: #92400e;
+  font-size: 0.8rem;
+  padding: 8px 12px;
+  position: relative;
+  z-index: 9999;
+}
+
+.inapp-banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.inapp-banner-content span {
+  line-height: 1.4;
+  font-size: 0.78rem;
+}
+
+.btn-close-inapp {
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: 700;
+  color: #92400e;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+
 
