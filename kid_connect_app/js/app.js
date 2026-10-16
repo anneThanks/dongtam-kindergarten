@@ -271,11 +271,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!micBtn) return;
 
+    let baseObservationText = "";
+
     micBtn.addEventListener("click", () => {
+      if (!window.kidConnectSpeech || !window.kidConnectSpeech.isSupported()) {
+        alert("Trình duyệt không hỗ trợ nhận diện giọng nói trực tiếp qua web.\n\n👉 Thầy/cô chỉ cần chạm vào ô ghi chú rồi bấm nút Micro 🎙️ ngay trên bàn phím điện thoại để nói cực tiện nhé!");
+        return;
+      }
+
+      if (!state.isListening && inputEl) {
+        baseObservationText = inputEl.value.trim();
+      }
+
       window.kidConnectSpeech.toggleListening(
         (transcript, isFinal) => {
           if (inputEl) {
-            inputEl.value = transcript;
+            inputEl.value = baseObservationText 
+              ? (baseObservationText + " " + transcript) 
+              : transcript;
           }
         },
         (isListening) => {
@@ -291,20 +304,26 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         },
         (error) => {
+          // 'aborted' và 'no-speech' là bình thường khi người dùng dừng nói hoặc đổi ứng dụng
+          if (error === "aborted" || error === "no-speech") {
+            console.log("Speech recognition stopped/aborted cleanly:", error);
+            return;
+          }
+
           if (error === "service-not-allowed" || error === "not-allowed") {
             const isZalo = /zalo/i.test(navigator.userAgent);
             const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
             let msg = "Microphone đang bị chặn hoặc chưa được cấp quyền.";
             if (isZalo || isIOS) {
-              msg = "⚠️ Trình duyệt trong ứng dụng Zalo không hỗ trợ mở Micro trực tiếp.\n\n👉 Cách 1 (Rất tiện): Chạm vào ô ghi chú ➔ Bấm nút Micro 🎙️ ngay trên bàn phím điện thoại để nói tiếng Việt cực chuẩn!\n\n👉 Cách 2: Bấm vào dấu [•••] ở góc trên bên phải màn hình ➔ Chọn 'Mở bằng Safari' (hoặc Chrome) để dùng nút Micro đỏ của app.";
+              msg = "⚠️ Trình duyệt chưa được cấp quyền mở Micro.\n\n👉 Cách tiện nhất: Chạm vào ô ghi chú ➔ Bấm nút Micro 🎙️ ngay trên bàn phím điện thoại để nói tiếng Việt cực chuẩn!\n\n👉 Hoặc vào Cài đặt của điện thoại ➔ Cho phép Safari truy cập Micro.";
             } else {
               msg = "Vui lòng cho phép quyền truy cập Micro trên trình duyệt (hoặc dùng nút Micro trên bàn phím điện thoại nhé)!";
             }
             alert(msg);
-          } else if (error === "no-speech") {
-            console.log("Không phát hiện giọng nói.");
+          } else if (error === "network") {
+            console.warn("Speech network error:", error);
           } else {
-            alert("Lỗi micro: " + error + ".\nThầy/cô có thể dùng nút Micro trên bàn phím điện thoại để nói cực tiện nhé!");
+            console.warn("Lỗi micro không nghiêm trọng:", error);
           }
         }
       );

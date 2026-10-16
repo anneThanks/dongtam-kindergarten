@@ -21,7 +21,9 @@ class KidConnectSpeechModule {
     try {
       this.recognition = new SpeechRecognition();
       this.recognition.lang = "vi-VN"; // Tiếng Việt chuẩn
-      this.recognition.continuous = true;
+      const isMobile = /iphone|ipad|ipod|android/i.test(navigator.userAgent);
+      // Trên iOS Safari / mobile, continuous: true gây lỗi 'aborted' ngay lập tức
+      this.recognition.continuous = !isMobile;
       this.recognition.interimResults = true;
 
       this.recognition.onstart = () => {
@@ -35,19 +37,24 @@ class KidConnectSpeechModule {
       };
 
       this.recognition.onerror = (event) => {
-        console.error("Speech Recognition Error:", event.error);
+        console.warn("Speech Recognition Error:", event.error);
         this.isListening = false;
         if (this.onStateChange) this.onStateChange(false);
+        // 'aborted' và 'no-speech' là trạng thái tự nhiên khi người dùng dừng hoặc ngắt quãng, không phải lỗi hệ thống
+        if (event.error === "aborted" || event.error === "no-speech") {
+          return;
+        }
         if (this.onError) this.onError(event.error);
       };
 
       this.recognition.onresult = (event) => {
-        let transcript = "";
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          transcript += event.results[i][0].transcript;
+        let fullTranscript = "";
+        for (let i = 0; i < event.results.length; i++) {
+          fullTranscript += event.results[i][0].transcript;
         }
         if (this.onResult) {
-          this.onResult(transcript, event.results[event.results.length - 1].isFinal);
+          const isFinal = event.results[event.results.length - 1]?.isFinal || false;
+          this.onResult(fullTranscript, isFinal);
         }
       };
     } catch (e) {
@@ -69,26 +76,36 @@ class KidConnectSpeechModule {
     }
 
     if (!this.recognition) {
-      alert("Trình duyệt của thầy/cô chưa hỗ trợ nhận diện giọng nói tự động. Vui lòng sử dụng Google Chrome, Microsoft Edge hoặc gõ trực tiếp ghi chú vào ô nhé!");
+      alert("Trình duyệt của thầy/cô chưa hỗ trợ nhận diện giọng nói tự động. Thầy/cô có thể chạm vào ô ghi chú rồi dùng nút Micro 🎙️ trên bàn phím điện thoại nhé!");
       return;
     }
 
     if (this.isListening) {
-      this.recognition.stop();
-      this.isListening = false;
+      this.stopListening();
     } else {
       try {
         this.recognition.start();
       } catch (e) {
-        console.warn("Lỗi khi start recognition:", e);
+        console.warn("Lỗi khi start recognition (có thể đang chạy):", e);
+        try {
+          this.recognition.abort();
+          setTimeout(() => {
+            try { this.recognition.start(); } catch (err) {}
+          }, 150);
+        } catch (err) {}
       }
     }
   }
 
   stopListening() {
-    if (this.recognition && this.isListening) {
-      this.recognition.stop();
+    if (this.recognition) {
+      try {
+        this.recognition.stop();
+      } catch (e) {
+        try { this.recognition.abort(); } catch (err) {}
+      }
       this.isListening = false;
+      if (this.onStateChange) this.onStateChange(false);
     }
   }
 
