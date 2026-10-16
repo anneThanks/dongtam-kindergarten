@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POSTER TRIỂN LÃM: KID-CONNECT AI | Giải Thưởng Tiên Phong Ứng Dụng AI 2026</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-navy: #0f172a;
+      --accent-amber: #f59e0b;
+      --accent-rose: #e11d48;
+      --accent-emerald: #10b981;
+      --accent-violet: #8b5cf6;
+      --bg-slate: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --poster-w: 1200px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #0f172a;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px 10px 60px 10px;
+      line-height: 1.5;
+    }
+
+    /* TOP ACTION TOOLBAR */
+    .toolbar {
+      position: sticky;
+      top: 10px;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+      padding: 10px 24px;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .toolbar-title {
+      color: #f8fafc;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-right: 8px;
+    }
+
+    .toolbar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 7px 14px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .toolbar-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .toolbar-btn.primary {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      border-color: #38bdf8;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+    }
+
+    .toolbar-btn.primary:hover {
+      background: linear-gradient(135deg, #0369a1, #1d4ed8);
+    }
+
+    .toolbar-btn.amber {
+      background: linear-gradient(135deg, #d97706, #f59e0b);
+      border-color: #fde68a;
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+    }
+
+    .zoom-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 3px 8px;
+      border-radius: 9999px;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    .zoom-btn {
+      background: none;
+      border: none;
+      color: #cbd5e1;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .zoom-btn:hover {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+
+    /* POSTER WRAPPER */
+    .poster-viewport {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      transition: transform 0.2s ease;
+      transform-origin: top center;
+    }
+
+    .poster {
+      width: var(--poster-w);
+      background-color: var(--bg-slate);
+      border-radius: 16px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 4px solid #1e293b;
+      position: relative;
+    }
+
+    /* 1. POSTER HEADER */
+    .poster-header {
+      background: linear-gradient(135deg, #091224 0%, #0f1f3d 50%, #172554 100%);
+      color: #ffffff;
+      padding: 36px 40px 28px 40px;
+      text-align: center;
+      position: relative;
+      border-bottom: 5px solid var(--accent-amber);
+    }
+
+    .poster-header::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 50% 20%, rgba(2, 132, 199, 0.25), transparent 70%);
+      pointer-events: none;
+    }
+
+    .header-badge-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .badge-org {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      color: #fbbf24;
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-sub {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #e2e8f0;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 9999px;
+    }
+
+    .poster-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      background: linear-gradient(180deg, #ffffff 30%, #e0f2fe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .poster-slogan {
+      font-size: 18px;
+      font-weight: 500;
+      font-style: italic;
+      color: #38bdf8;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .poster-meta-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      color: #cbd5e1;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .meta-item strong {
+      color: #ffffff;
+    }
+
+    /* 2. POSTER BODY (3 COLUMNS) */
+    .poster-body {
+      display: grid;
+      grid-template-columns: 1fr 1.08fr 1fr;
+      gap: 20px;
+      padding: 24px;
+      background-color: #f1f5f9;
+      flex-grow: 1;
+    }
+
+    .poster-col {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* CARDS */
+    .section-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      border: 1.5px solid var(--border-color);
+      overflow: hidden;
+      box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .section-card.rose { border-top: 5px solid var(--accent-rose); }
+    .section-card.blue { border-top: 5px solid var(--primary); }
+    .section-card.emerald { border-top: 5px solid var(--accent-emerald); }
+    .section-card.amber { border-top: 5px solid var(--accent-amber); }
+
+    .card-header {
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #fff;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+    .card-icon.rose { background: var(--accent-rose); }
+    .card-icon.blue { background: var(--primary); }
+    .card-icon.emerald { background: var(--accent-emerald); }
+    .card-icon.amber { background: var(--accent-amber); }
+
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16.5px;
+      font-weight: 800;
+      color: var(--primary-navy);
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
+    }
+
+    .card-body {
+      padding: 16px 18px;
+      font-size: 13.5px;
+      color: #334155;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .lead-text {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #1e293b;
+    }
+
+    .highlight-pill {
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    .pain-point-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .pain-point-item {
+      background: #fff1f2;
+      border-left: 3.5px solid var(--accent-rose);
+      border-radius: 6px;
+      padding: 9px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .pain-point-item .pp-title {
+      font-weight: 700;
+      color: #9f1239;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pain-point-item .pp-desc {
+      font-size: 12.5px;
+      color: #4c0519;
+      line-height: 1.45;
+    }
+
+    .goal-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .goal-item {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      padding: 8px 12px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #065f46;
+      font-weight: 600;
+    }
+
+    .goal-check {
+      background: var(--accent-emerald);
+      color: #fff;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .step-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+
+    .step-box {
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 11px 14px;
+      position: relative;
+    }
+
+    .step-box.s1 { background: #f0f9ff; border-color: #bae6fd; }
+    .step-box.s2 { background: #faf5ff; border-color: #e9d5ff; }
+    .step-box.s3 { background: #fffbeb; border-color: #fde68a; }
+
+    .step-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-bottom: 5px;
+    }
+    .s1 .step-badge { background: #0284c7; color: #fff; }
+    .s2 .step-badge { background: #8b5cf6; color: #fff; }
+    .s3 .step-badge { background: #d97706; color: #fff; }
+
+    .step-title {
+      font-weight: 800;
+      font-size: 13.5px;
+      color: var(--primary-navy);
+      margin-bottom: 4px;
+    }
+
+    .step-desc {
+      font-size: 12.5px;
+      color: #475569;
+      line-height: 1.45;
+    }
+
+    .hero-img-wrap {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid #cbd5e1;
+      position: relative;
+      background: #000;
+    }
+
+    .hero-img-wrap img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .hero-img-wrap:hover img {
+      transform: scale(1.02);
+    }
+
+    .hero-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(0deg, rgba(15,23,42,0.9) 0%, transparent 100%);
+      color: #ffffff;
+      padding: 8px 12px;
+      font-size: 11.5px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .tech-pill-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 7px;
+    }
+
+    .tech-pill {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 7px 11px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tech-pill strong {
+      color: var(--primary-dark);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border: 1.5px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .stat-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .stat-card.green .stat-number { color: var(--accent-emerald); }
+    .stat-card.blue .stat-number { color: var(--primary); }
+    .stat-card.amber .stat-number { color: var(--accent-amber); }
+    .stat-card.rose .stat-number { color: var(--accent-rose); }
+
+    .stat-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--primary-navy);
+      line-height: 1.3;
+    }
+
+    .stat-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .compare-table th, .compare-table td {
+      padding: 7px 9px;
+      text-align: left;
+    }
+
+    .compare-table th {
+      background: #e2e8f0;
+      color: var(--primary-navy);
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .compare-table tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .compare-table td.bad {
+      color: #e11d48;
+      font-weight: 600;
+    }
+
+    .compare-table td.good {
+      color: #059669;
+      font-weight: 700;
+    }
+
+    .quote-box {
+      background: #f1f5f9;
+      border-left: 3.5px solid var(--primary);
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-style: italic;
+      color: #1e293b;
+      line-height: 1.45;
+    }
+
+    .quote-author {
+      font-size: 11px;
+      font-weight: 700;
+      font-style: normal;
+      color: var(--primary-dark);
+      margin-top: 4px;
+      display: block;
+      text-align: right;
+    }
+
+    /* 3. POSTER FOOTER */
+    .poster-footer {
+      background: linear-gradient(135deg, #091224 0%, #0f172a 100%);
+      color: #ffffff;
+      padding: 18px 40px;
+      border-top: 4px solid var(--accent-amber);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-grow: 1;
+    }
+
+    .footer-slogan {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #fbbf24;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-info {
+      font-size: 12.5px;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+
+    .footer-info a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 8px 14px;
+      border-radius: 12px;
+    }
+
+    .qr-img {
+      width: 72px;
+      height: 72px;
+      border-radius: 8px;
+      background: #fff;
+      padding: 3px;
+      display: block;
+    }
+
+    .qr-text {
+      display: flex;
+      flex-direction: column;
+      font-size: 11.5px;
+      color: #e2e8f0;
+      line-height: 1.35;
+    }
+    .qr-text strong {
+      color: #fbbf24;
+      font-size: 12px;
+    }
+
+    /* PRINT STYLES */
+    @media print {
+      body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .toolbar {
+        display: none !important;
+      }
+
+      .poster-viewport {
+        transform: none !important;
+      }
+
+      .poster {
+        width: 100% !important;
+        max-width: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+      }
+
+      @page {
+        size: A0 portrait;
+        margin: 0;
+      }
+    }
+
+    @media (max-width: 1250px) {
+      :root {
+        --poster-w: 100%;
+      }
+      .poster-body {
+        grid-template-columns: 1fr;
+      }
+      .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .poster-title {
+        font-size: 24px;
+      }
+      .poster-header {
+        padding: 24px 16px;
+      }
+      .poster-body {
+        padding: 16px;
+      }
+      .poster-footer {
+        padding: 16px;
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP ACTION TOOLBAR -->
+  <div class="toolbar" id="toolbar">
+    <div class="toolbar-title">
+      <span>🎨 KID-CONNECT AI</span>
+      <span style="color: #64748b;">|</span>
+      <span style="color: #38bdf8;">Poster Khoa Học A0</span>
+    </div>
+
+    <!-- Print / Export PDF -->
+    <button class="toolbar-btn primary" onclick="window.print()">
+      🖨️ In Poster / Lưu PDF
+    </button>
+
+    <!-- Download PPTX -->
+    <a class="toolbar-btn amber" href="../Poster_KID_CONNECT_AI_Canva_Import.pptx" download="Poster_KID_CONNECT_AI_Canva_Import.pptx">
+      📥 Tải PowerPoint 24x36" (.pptx)
+    </a>
+
+    <!-- Official Canva Template -->
+    <a class="toolbar-btn" href="https://www.canva.com/design/DAHX8izuwG0/IHnb5H7RXv3gR_rsUFUDIA/edit" target="_blank" rel="noopener">
+      🎨 Mẫu Canva BTC
+    </a>
+
+    <!-- Launch Main App -->
+    <a class="toolbar-btn" href="index.html">
+      👶 Mở Ứng Dụng App
+    </a>
+
+    <!-- Zoom Controls -->
+    <div class="zoom-group">
+      <span>Kích thước:</span>
+      <button class="zoom-btn" onclick="setZoom(0.8)">80%</button>
+      <button class="zoom-btn" onclick="setZoom(1.0)">100%</button>
+      <button class="zoom-btn" onclick="setZoom(1.15)">115%</button>
+    </div>
+  </div>
+
+  <!-- POSTER CONTAINER -->
+  <div class="poster-viewport" id="viewport">
+    <div class="poster" id="poster">
+
+      <!-- ================= HEADER SECTION ================= -->
+      <header class="poster-header">
+        <div class="header-badge-row">
+          <span class="badge-org">🏛️ DIỄN ĐÀN ĐỔI MỚI SÁNG TẠO GIÁO DỤC VIỆT NAM VỚI TRÍ TUỆ NHÂN TẠO 2026</span>
+          <span class="badge-sub">Đồng tổ chức: BỘ GIÁO DỤC VÀ ĐÀO TẠO & ĐẠI HỌC RMIT VIỆT NAM</span>
+        </div>
+
+        <h1 class="poster-title">
+          KID-CONNECT AI: TRỢ LÝ TRÍ TUỆ NHÂN TẠO CÁ NHÂN HÓA ĐÁNH GIÁ TRẺ<br>
+          VÀ TỐI ƯU HÓA KẾT NỐI NHÀ TRƯỜNG - GIA ĐÌNH
+        </h1>
+
+        <div class="poster-slogan">
+          <span>★</span>
+          <span>Công nghệ nâng bước yêu thương — Cá nhân hóa hành trình lớn khôn của bé</span>
+          <span>★</span>
+        </div>
+
+        <div class="poster-meta-bar">
+          <div class="meta-item">
+            <span>🏆 Phân bảng thi đấu:</span>
+            <strong>BẢNG A (Khối Mầm non & Tiểu học)</strong>
+          </div>
+          <div class="meta-item">
+            <span>🏫 Cơ quan / Đơn vị:</span>
+            <strong>Trường Mầm non Phúc Sơn B — Xã Phúc Sơn</strong>
+          </div>
+          <div class="meta-item">
+            <span>👩‍🏫 Tác giả:</span>
+            <strong>Giáo viên Chủ trì & Nhóm Sư phạm Số</strong>
+          </div>
+        </div>
+      </header>
+
+      <!-- ================= BODY 3-COLUMNS ================= -->
+      <main class="poster-body">
+
+        <!-- ========== CỘT 1: BỐI CẢNH & THÁCH THỨC ========== -->
+        <section class="poster-col">
+          
+          <article class="section-card rose">
+            <div class="card-header">
+              <div class="card-icon rose">1</div>
+              <h2 class="card-title">Bối Cảnh & Nỗi Đau Thực Tế</h2>
+            </div>
+            <div class="card-body">
+              <p class="lead-text">
+                <strong>Trường Mầm non Phúc Sơn B</strong> có hơn 100 trẻ tại 4 độ tuổi thuộc địa bàn nông thôn khó khăn. Phụ huynh bận rộn làm nông, công nhân nên ít có điều kiện trao đổi trực tiếp với cô giáo.
+              </p>
+              <p class="lead-text">
+                Theo quy định Bộ GD&ĐT, giáo viên phải đánh giá định tính liên tục <span class="highlight-pill">25 - 35 trẻ</span> theo <strong>5 lĩnh vực phát triển GDMN</strong> (Thể chất, Nhận thức, Ngôn ngữ, TC-KNXH, Thẩm mỹ).
+              </p>
+            </div>
+          </article>
+
+          <article class="section-card rose">
+            <div class="card-header">
+              <div class="card-icon rose">⚡</div>
+              <h2 class="card-title">3 "Điểm Nghẽn" Lớn Của Giáo Viên</h2>
+            </div>
+            <div class="card-body">
+              <div class="pain-point-list">
+                <div class="pain-point-item">
+                  <span class="pp-title">⏳ Quá tải hồ sơ sổ sách</span>
+                  <span class="pp-desc">Mất từ <strong>8 - 12 giờ/tuần</strong> ngoài giờ lên lớp chỉ để viết sổ theo dõi, nhật ký thủ công, gây kiệt sức và giảm giờ chuẩn bị đồ dùng dạy học sáng tạo.</span>
+                </div>
+                <div class="pain-point-item">
+                  <span class="pp-title">📝 Nhận xét rập khuôn, chiếu lệ</span>
+                  <span class="pp-desc">Do thiếu thời gian, lời phê dễ rơi vào chung chung (<em>"bé ngoan, ăn hết suất"</em>), chưa làm nổi bật tiến bộ vi mô hay sở thích riêng biệt của từng trẻ.</span>
+                </div>
+                <div class="pain-point-item">
+                  <span class="pp-title">📱 Giao tiếp một chiều qua Zalo</span>
+                  <span class="pp-desc">Kênh Zalo nhóm chung dễ trôi thông tin, thiếu tính cá nhân hóa và chưa cung cấp chỉ dẫn sư phạm cụ thể để phụ huynh đồng hành cùng con tại nhà.</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="section-card emerald">
+            <div class="card-header">
+              <div class="card-icon emerald">🎯</div>
+              <h2 class="card-title">Mục Tiêu Đột Phá Của Dự Án</h2>
+            </div>
+            <div class="card-body">
+              <div class="goal-grid">
+                <div class="goal-item">
+                  <div class="goal-check">✓</div>
+                  <span><strong>Cắt giảm 80%</strong> thời gian làm sổ sách cho giáo viên</span>
+                </div>
+                <div class="goal-item">
+                  <div class="goal-check">✓</div>
+                  <span><strong>Cá nhân hóa 100%</strong> hồ sơ theo dõi tiến bộ cho trẻ</span>
+                </div>
+                <div class="goal-item">
+                  <div class="goal-check">✓</div>
+                  <span><strong>Tạo kênh 2 chiều</strong> nhà trường - gia đình cùng đồng hành</span>
+                </div>
+                <div class="goal-item">
+                  <div class="goal-check">✓</div>
+                  <span><strong>Chi phí 0 đồng</strong>, vận hành mượt mà trên di động</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </section>
+
+        <!-- ========== CỘT 2: GIẢI PHÁP & QUY TRÌNH (TRUNG TÂM) ========== -->
+        <section class="poster-col">
+          
+          <article class="section-card blue">
+            <div class="card-header">
+              <div class="card-icon blue">2</div>
+              <h2 class="card-title">Quy Trình 3 Bước Tinh Gọn</h2>
+            </div>
+            <div class="card-body">
+              <div class="step-flow">
+                
+                <div class="step-box s1">
+                  <span class="step-badge">Bước 1 • Voice Input (30s)</span>
+                  <div class="step-title">🎙️ Thu nhận tự nhiên qua giọng nói</div>
+                  <div class="step-desc">
+                    Cô giáo chạm micro trên điện thoại nói 20-30s giọng tự nhiên cuối ngày: <em>"Bé Nam hôm nay tự xúc cơm gọn gàng, vẽ tranh sắc màu tươi sáng, nhưng lúc vận động còn rụt rè."</em>
+                  </div>
+                </div>
+
+                <div class="step-box s2">
+                  <span class="step-badge">Bước 2 • AI Core Gemini Engine</span>
+                  <div class="step-title">🧠 Phân tích 5 Lĩnh vực & Gợi ý tại nhà</div>
+                  <div class="step-desc">
+                    Prompt Master bóc tách hành vi vào 5 lĩnh vực GDMN chuẩn Bộ GD&ĐT, chấm điểm sao và tự động tạo 01 <strong>Home Connection Tip</strong> ấm áp để phụ huynh cùng chơi với con.
+                  </div>
+                </div>
+
+                <div class="step-box s3">
+                  <span class="step-badge">Bước 3 • Canva Infographic</span>
+                  <div class="step-title">🎨 Kết xuất Thẻ Nhật Ký Số 1 Chạm</div>
+                  <div class="step-desc">
+                    Tự động tạo thiệp ảnh Canva sắc nét với 4 chủ đề sắc màu (Cầu vồng, Khu vườn, Đại dương, Rừng xanh), sao chép tin nhắn Zalo gửi riêng cho từng cha mẹ.
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </article>
+
+          <!-- Visual Hero Image Showcase -->
+          <div class="hero-img-wrap">
+            <img src="assets/poster_hero_illustration.jpg" alt="Cô giáo và học sinh tương tác với ứng dụng KID-CONNECT AI" onerror="this.src='../poster_hero_illustration.jpg'">
+            <div class="hero-caption">
+              ✨ Cô giáo Trường MN Phúc Sơn B tương tác cùng trẻ bên bảng theo dõi phát triển số của bé
+            </div>
+          </div>
+
+          <article class="section-card blue">
+            <div class="card-header">
+              <div class="card-icon blue">⚙️</div>
+              <h2 class="card-title">3 Phân Hệ Công Nghệ (Chi Phí 0Đ)</h2>
+            </div>
+            <div class="card-body">
+              <div class="tech-pill-grid">
+                <div class="tech-pill">
+                  <span>🎙️</span>
+                  <div><strong>Voice-to-Pedagogical Note:</strong> Web Speech API nhận diện tiếng Việt cực chuẩn, xử lý tốt cả phương ngữ địa phương.</div>
+                </div>
+                <div class="tech-pill">
+                  <span>🤖</span>
+                  <div><strong>Rule-Engine + Google Gemini AI:</strong> Tích hợp sâu tri thức chuyên môn Chương trình GDMN của Bộ GD&ĐT.</div>
+                </div>
+                <div class="tech-pill">
+                  <span>🎨</span>
+                  <div><strong>Canva for Education Automation:</strong> Canvas HTML5 API sinh ảnh chất lượng cao 300DPI gửi Zalo tức thì.</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </section>
+
+        <!-- ========== CỘT 3: KẾT QUẢ, TÁC ĐỘNG & LAN TỎA ========== -->
+        <section class="poster-col">
+          
+          <article class="section-card emerald">
+            <div class="card-header">
+              <div class="card-icon emerald">3</div>
+              <h2 class="card-title">Kết Quả Thực Nghiệm & Tác Động</h2>
+            </div>
+            <div class="card-body">
+              
+              <div class="stats-grid">
+                <div class="stat-card green">
+                  <div class="stat-number">-83.3%</div>
+                  <div class="stat-label">Thời Gian Sổ Sách</div>
+                  <div class="stat-sub">12h ➔ 2h/tuần</div>
+                </div>
+
+                <div class="stat-card blue">
+                  <div class="stat-number">100%</div>
+                  <div class="stat-label">Hồ Sơ Tiến Bộ Số</div>
+                  <div class="stat-sub">Toàn bộ trẻ lớp điểm</div>
+                </div>
+
+                <div class="stat-card amber">
+                  <div class="stat-number">94.7%</div>
+                  <div class="stat-label">Phụ Huynh Tương Tác</div>
+                  <div class="stat-sub">Trước: 38.5%</div>
+                </div>
+
+                <div class="stat-card rose">
+                  <div class="stat-number">86.3%</div>
+                  <div class="stat-label">Đồng Hành Tại Nhà</div>
+                  <div class="stat-sub">Chơi theo gợi ý AI</div>
+                </div>
+              </div>
+
+              <!-- Before vs After Table -->
+              <table class="compare-table">
+                <thead>
+                  <tr>
+                    <th>Tiêu chí so sánh</th>
+                    <th>Cách làm cũ</th>
+                    <th>KID-CONNECT AI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Thời gian ghi sổ</strong></td>
+                    <td class="bad">8 - 12 giờ/tuần</td>
+                    <td class="good">~ 2 giờ/tuần (-83%)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Chất lượng lời phê</strong></td>
+                    <td class="bad">Chung chung, rập khuôn</td>
+                    <td class="good">Chi tiết theo 5 lĩnh vực</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Chỉ dẫn cho cha mẹ</strong></td>
+                    <td class="bad">Gần như không có</td>
+                    <td class="good">100% có Home Tip 15'</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Độ gắn kết gia đình</strong></td>
+                    <td class="bad">Zalo nhóm dễ trôi</td>
+                    <td class="good">Nhật ký riêng tư rực rỡ</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </article>
+
+          <article class="section-card emerald">
+            <div class="card-header">
+              <div class="card-icon emerald">💬</div>
+              <h2 class="card-title">Tiếng Nói Người Trong Cuộc</h2>
+            </div>
+            <div class="card-body">
+              <div class="quote-box">
+                “Từ ngày có ứng dụng, tôi không còn phải thức đến 11h đêm cặm cụi ghi sổ theo dõi. Tôi dành trọn thời gian đó để nghiên cứu phương pháp dạy học sáng tạo!”
+                <span class="quote-author">— Cô giáo chủ trì Trường Mầm non Phúc Sơn B</span>
+              </div>
+              <div class="quote-box">
+                “Đọc lời khuyên của cô trong bản tin nhật ký do AI hỗ trợ, tối nào cả nhà tôi cũng hào hứng cùng con chơi trò chơi chữ cái trước khi đi ngủ!”
+                <span class="quote-author">— Đại diện Ban Phụ huynh học sinh</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="section-card amber">
+            <div class="card-header">
+              <div class="card-icon amber">🛡️</div>
+              <h2 class="card-title">Đạo Đức AI & Khả Năng Nhân Rộng</h2>
+            </div>
+            <div class="card-body">
+              <p class="lead-text">
+                🔒 <strong>Bảo vệ trẻ em (Luật Trẻ em 2016):</strong> Dữ liệu lưu trữ cục bộ, có công tắc ẩn danh ảnh/tên trẻ, tuyệt đối bảo vệ quyền riêng tư.
+              </p>
+              <p class="lead-text">
+                👩‍🏫 <strong>Human-in-the-Loop:</strong> Giáo viên giữ quyền kiểm duyệt tối cao đối với mọi nhận xét trước khi chuyển thành ảnh gửi phụ huynh.
+              </p>
+              <p class="lead-text">
+                🚀 <strong>Khả năng nhân rộng:</strong> Chi phí 0 đồng, không cần cài đặt phức tạp, sẵn sàng chuyển giao cho 100% trường mầm non toàn xã, toàn huyện chỉ sau 30 phút tập huấn.
+              </p>
+            </div>
+          </article>
+
+        </section>
+
+      </main>
+
+      <!-- ================= FOOTER SECTION ================= -->
+      <footer class="poster-footer">
+        <div class="footer-left">
+          <div class="footer-slogan">
+            KID-CONNECT AI: CÔNG NGHỆ NÂNG BƯỚC YÊU THƯƠNG — CÙNG BÉ KIẾN TẠO TƯƠNG LAI SỐ!
+          </div>
+          <div class="footer-info">
+            Trường Mầm non Phúc Sơn B — Xã Phúc Sơn &nbsp;|&nbsp; 
+            Cổng nộp bài dự thi: <a href="https://www.ieeai.net/giaithuong" target="_blank">www.ieeai.net/giaithuong</a> &nbsp;|&nbsp; 
+            Ứng dụng online: <a href="https://annethanks.github.io/dongtam-kindergarten/" target="_blank">annethanks.github.io/dongtam-kindergarten/</a>
+          </div>
+        </div>
+
+        <div class="footer-right">
+          <img class="qr-img" src="assets/QR_Code_KID_CONNECT_AI.png" alt="QR Code KID-CONNECT AI" onerror="this.src='../QR_Code_KID_CONNECT_AI.png'">
+          <div class="qr-text">
+            <strong>📱 QUÉT MÃ QR</strong>
+            <span>Trải nghiệm App Online &</span>
+            <span>Xem Video Clip Thuyết Minh</span>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <script>
+    function setZoom(scale) {
+      const poster = document.getElementById('poster');
+      if (scale === 1.0) {
+        poster.style.transform = 'none';
+      } else {
+        poster.style.transform = `scale(${scale})`;
+        poster.style.transformOrigin = 'top center';
+      }
+    }
+  </script>
+
+</body>
+</html>
