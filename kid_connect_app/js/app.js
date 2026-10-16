@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCardControls();
   initSettingsModal();
   initResponsibleAIToggle();
+  initClassModal();
   initStudentModal();
   initMobileQRModal();
   renderImpactDashboard();
@@ -74,13 +75,31 @@ document.addEventListener("DOMContentLoaded", () => {
       classSelect.appendChild(opt);
     });
 
-    classSelect.addEventListener("change", (e) => {
+    // Thêm tùy chọn tạo lớp mới nhanh ở cuối danh sách chọn
+    const addOpt = document.createElement("option");
+    addOpt.value = "__ADD_NEW_CLASS__";
+    addOpt.textContent = "➕ [Tạo thêm lớp học mới...]";
+    addOpt.style.fontWeight = "bold";
+    addOpt.style.color = "#4f46e5";
+    classSelect.appendChild(addOpt);
+
+    classSelect.onchange = (e) => {
+      if (e.target.value === "__ADD_NEW_CLASS__") {
+        classSelect.value = state.currentClassId;
+        openClassModal();
+        return;
+      }
       state.currentClassId = e.target.value;
       initStudentSelector();
-      // Chọn học sinh đầu tiên của lớp mới
+      // Chọn học sinh đầu tiên của lớp mới hoặc xử lý khi lớp chưa có bé nào
       const firstStudent = state.students.find(s => s.classId === state.currentClassId);
-      if (firstStudent) selectStudent(firstStudent.id);
-    });
+      if (firstStudent) {
+        selectStudent(firstStudent.id);
+      } else {
+        selectStudent(null);
+      }
+      renderImpactDashboard();
+    };
   }
 
   function initStudentSelector() {
@@ -90,36 +109,50 @@ document.addEventListener("DOMContentLoaded", () => {
     studentListEl.innerHTML = "";
     const filteredStudents = state.students.filter(s => s.classId === state.currentClassId);
 
-    filteredStudents.forEach(st => {
-      const card = document.createElement("div");
-      card.className = `student-pill-item ${st.id === state.currentStudentId ? 'selected' : ''}`;
-      card.setAttribute("data-id", st.id);
-
-      const shortName = st.nickName || st.name;
-      const codeText = state.isPrivacyMasked ? st.code : '';
-      const avatarUrl = state.isPrivacyMasked
-        ? `https://api.dicebear.com/7.x/bottts/svg?seed=${st.code}&backgroundColor=b6e3f4`
-        : (st.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${st.name}&backgroundColor=ffd5dc`);
-
-      const hasAssessed = !!st.latestAssessment;
-
-      card.innerHTML = `
-        <div class="pill-avatar-wrap">
-          <img src="${avatarUrl}" alt="${shortName}" class="pill-avatar" />
-          ${hasAssessed ? '<span class="pill-badge-done">✓</span>' : ''}
-        </div>
-        <div class="pill-info">
-          <span class="pill-name-short">${shortName}</span>
-          <span class="pill-name-code">${codeText}</span>
+    // Hiển thị thông báo thân thiện khi lớp mới tạo chưa có học sinh
+    if (filteredStudents.length === 0) {
+      const emptyCard = document.createElement("div");
+      emptyCard.className = "student-list-empty-state";
+      emptyCard.innerHTML = `
+        <div style="text-align: center; padding: 16px 12px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: var(--radius-md); color: #64748b; font-size: 0.82rem; margin-bottom: 8px;">
+          <div style="font-size: 1.6rem; margin-bottom: 4px;">🎒🧸</div>
+          <strong style="color: #334155; font-size: 0.88rem; display: block;">Lớp chưa có học sinh</strong>
+          <span style="font-size: 0.78rem;">Cô bấm nút bên dưới để thêm các bé vào lớp nhé!</span>
         </div>
       `;
+      studentListEl.appendChild(emptyCard);
+    } else {
+      filteredStudents.forEach(st => {
+        const card = document.createElement("div");
+        card.className = `student-pill-item ${st.id === state.currentStudentId ? 'selected' : ''}`;
+        card.setAttribute("data-id", st.id);
 
-      card.addEventListener("click", () => {
-        selectStudent(st.id);
+        const shortName = st.nickName || st.name;
+        const codeText = state.isPrivacyMasked ? st.code : '';
+        const avatarUrl = state.isPrivacyMasked
+          ? `https://api.dicebear.com/7.x/bottts/svg?seed=${st.code}&backgroundColor=b6e3f4`
+          : (st.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${st.name}&backgroundColor=ffd5dc`);
+
+        const hasAssessed = !!st.latestAssessment;
+
+        card.innerHTML = `
+          <div class="pill-avatar-wrap">
+            <img src="${avatarUrl}" alt="${shortName}" class="pill-avatar" />
+            ${hasAssessed ? '<span class="pill-badge-done">✓</span>' : ''}
+          </div>
+          <div class="pill-info">
+            <span class="pill-name-short">${shortName}</span>
+            <span class="pill-name-code">${codeText}</span>
+          </div>
+        `;
+
+        card.addEventListener("click", () => {
+          selectStudent(st.id);
+        });
+
+        studentListEl.appendChild(card);
       });
-
-      studentListEl.appendChild(card);
-    });
+    }
 
     // Thêm nút Thêm Bé trực tiếp vào cuối băng chuyền
     const addCard = document.createElement("div");
@@ -142,18 +175,35 @@ document.addEventListener("DOMContentLoaded", () => {
   function selectStudent(studentId) {
     state.currentStudentId = studentId;
     const student = state.students.find(s => s.id === studentId);
-    if (!student) return;
-
-    // Highlight item được chọn
-    document.querySelectorAll(".student-pill-item").forEach(item => {
-      item.classList.toggle("selected", item.getAttribute("data-id") === studentId);
-    });
 
     // Cập nhật thông tin bé trên header form
     const currentNameEl = document.getElementById("current-student-name");
     const currentCodeEl = document.getElementById("current-student-code");
     const currentAvatarEl = document.getElementById("current-student-avatar");
     const currentNotesEl = document.getElementById("current-student-notes");
+
+    if (!student) {
+      document.querySelectorAll(".student-pill-item").forEach(item => {
+        item.classList.remove("selected");
+      });
+      const curClass = state.classes.find(c => c.id === state.currentClassId);
+      const cName = curClass ? curClass.name : "Lớp Mới";
+      const cAge = curClass ? curClass.ageGroup : "";
+      
+      if (currentNameEl) currentNameEl.textContent = "Chưa có học sinh";
+      if (currentCodeEl) currentCodeEl.textContent = `Lớp: ${cName} (${cAge}) | Hãy thêm bé vào lớp`;
+      if (currentAvatarEl) currentAvatarEl.src = "https://api.dicebear.com/7.x/bottts/svg?seed=KidConnectNew&backgroundColor=e0e7ff";
+      if (currentNotesEl) currentNotesEl.textContent = "Lớp học chưa có học sinh. Cô giáo vui lòng nhấn '➕ Thêm Bé Mới Vào Lớp' ở cột bên trái để bắt đầu thêm các bé vào danh sách lớp nhé!";
+
+      clearAssessmentForm();
+      state.lastAssessment = null;
+      return;
+    }
+
+    // Highlight item được chọn
+    document.querySelectorAll(".student-pill-item").forEach(item => {
+      item.classList.toggle("selected", item.getAttribute("data-id") === studentId);
+    });
 
     const displayName = state.isPrivacyMasked ? `${student.nickName} (${student.code})` : student.name;
     const avatarUrl = state.isPrivacyMasked
@@ -527,6 +577,100 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // ===================== CREATE NEW CLASS MODAL =====================
+  function openClassModal() {
+    const modal = document.getElementById("class-modal");
+    if (modal) {
+      modal.classList.add("open");
+      const nameInput = document.getElementById("new-class-name");
+      if (nameInput) {
+        nameInput.value = "";
+        setTimeout(() => nameInput.focus(), 120);
+      }
+    }
+  }
+
+  function initClassModal() {
+    const btnOpen = document.getElementById("btn-open-class-modal");
+    const modal = document.getElementById("class-modal");
+    const btnClose = document.getElementById("btn-close-class-modal");
+    const btnCancel = document.getElementById("btn-cancel-class-modal");
+    const btnSave = document.getElementById("btn-save-new-class");
+
+    if (btnOpen) {
+      btnOpen.addEventListener("click", () => openClassModal());
+    }
+
+    if (btnClose && modal) {
+      btnClose.addEventListener("click", () => modal.classList.remove("open"));
+    }
+
+    if (btnCancel && modal) {
+      btnCancel.addEventListener("click", () => modal.classList.remove("open"));
+    }
+
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) modal.classList.remove("open");
+      });
+    }
+
+    if (btnSave && modal) {
+      btnSave.addEventListener("click", () => {
+        const nameInput = document.getElementById("new-class-name");
+        const ageSelect = document.getElementById("new-class-age");
+        const teacherInput = document.getElementById("new-class-teacher");
+        const roomInput = document.getElementById("new-class-room");
+        const totalInput = document.getElementById("new-class-total");
+
+        const name = nameInput ? nameInput.value.trim() : "";
+        const ageGroup = ageSelect ? ageSelect.value : "5-6 tuổi";
+        const teacher = teacherInput && teacherInput.value.trim() ? teacherInput.value.trim() : "Cô giáo phụ trách";
+        const room = roomInput && roomInput.value.trim() ? roomInput.value.trim() : "Phòng học Mầm non";
+        const totalStudents = totalInput ? (parseInt(totalInput.value) || 30) : 30;
+
+        if (!name) {
+          alert("Cô giáo vui lòng nhập tên lớp học!");
+          nameInput?.focus();
+          return;
+        }
+
+        const newId = "cls_" + Date.now();
+        const newClass = {
+          id: newId,
+          name: name,
+          ageGroup: ageGroup,
+          teacher: teacher,
+          totalStudents: totalStudents,
+          room: room
+        };
+
+        state.classes.push(newClass);
+        saveClasses();
+        state.currentClassId = newId;
+
+        // Cập nhật lại danh mục lớp và chuyển đến lớp mới
+        initClassSelector();
+        initStudentSelector();
+        selectStudent(null);
+        renderImpactDashboard();
+
+        modal.classList.remove("open");
+
+        // Reset ô nhập liệu
+        if (nameInput) nameInput.value = "";
+        if (teacherInput) teacherInput.value = "";
+        if (roomInput) roomInput.value = "";
+
+        alert(`🎉 Chúc mừng cô đã tạo mới "${name}" thành công!\nCô có thể bấm "➕ Thêm Bé Mới Vào Lớp" ở cột bên trái để bắt đầu lập danh sách học sinh.`);
+      });
+    }
+  }
+
+  function saveClasses() {
+    localStorage.setItem("kid_classes", JSON.stringify(state.classes));
+  }
+
   // ===================== ADD NEW STUDENT MODAL =====================
   function initStudentModal() {
     const btnOpenAdd = document.getElementById("btn-add-student");
@@ -540,27 +684,47 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnClose && modal) {
       btnClose.addEventListener("click", () => modal.classList.remove("open"));
     }
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) modal.classList.remove("open");
+      });
+    }
+
     if (btnSave && modal) {
       btnSave.addEventListener("click", () => {
-        const name = document.getElementById("new-student-name")?.value.trim();
-        const nickName = document.getElementById("new-student-nickname")?.value.trim() || name;
-        const notes = document.getElementById("new-student-notes")?.value.trim();
+        const nameEl = document.getElementById("new-student-name");
+        const nickNameEl = document.getElementById("new-student-nickname");
+        const notesEl = document.getElementById("new-student-notes");
+
+        const name = nameEl?.value.trim();
+        const nickName = nickNameEl?.value.trim() || name;
+        const notes = notesEl?.value.trim();
 
         if (!name) {
-          alert("Vui lòng nhập tên bé!");
+          alert("Cô giáo vui lòng nhập tên bé!");
+          nameEl?.focus();
           return;
         }
 
         const newId = "psb_" + Date.now();
-        const codeNum = state.students.length + 1;
+        const classStudents = state.students.filter(s => s.classId === state.currentClassId);
+        const codeNum = classStudents.length + 1;
+        const curClass = state.classes.find(c => c.id === state.currentClassId);
+        let prefix = "PS";
+        if (curClass) {
+          // Trích xuất mã ngắn từ tên lớp (ví dụ A1, A2, B1...)
+          const match = curClass.name.match(/[A-D][1-9]?/i);
+          prefix = match ? match[0].toUpperCase() : "PS";
+        }
+
         const newStudent = {
           id: newId,
           classId: state.currentClassId,
           name: name,
           nickName: nickName,
           gender: "boy",
-          code: `PS-A1-${codeNum < 10 ? '0' + codeNum : codeNum}`,
-          avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${name}&backgroundColor=b6e3f4`,
+          code: `PS-${prefix}-${codeNum < 10 ? '0' + codeNum : codeNum}`,
+          avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name)}&backgroundColor=b6e3f4`,
           notes: notes,
           latestAssessment: null
         };
@@ -569,7 +733,14 @@ document.addEventListener("DOMContentLoaded", () => {
         saveStudents();
         initStudentSelector();
         selectStudent(newId);
+        renderImpactDashboard();
+
         modal.classList.remove("open");
+
+        // Reset các ô nhập
+        if (nameEl) nameEl.value = "";
+        if (nickNameEl) nickNameEl.value = "";
+        if (notesEl) notesEl.value = "";
       });
     }
   }

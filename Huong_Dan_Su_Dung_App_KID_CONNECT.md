@@ -38,9 +38,11 @@
 
 ## 📖 III. QUY TRÌNH 4 BƯỚC THAO TÁC CỦA CÔ GIÁO
 
-### Bước 1: Chọn Lớp & Chọn Học Sinh
-- Ở thanh bên trái, chọn lớp học (Ví dụ: *Lớp Mẫu Giáo Lớn A1, Nhỡ B1, Bé C2 hoặc Nhà Trẻ Cơm A*).
-- Nhấp chọn tên bé trong danh sách (Ví dụ: *Bé An, Bé Châu, Bé Bảo...*).
+### Bước 1: Chọn Lớp & Chọn Học Sinh (Hoặc Tạo Thêm Lớp / Bé Mới)
+- **Chọn lớp có sẵn:** Ở thanh bên trái, chọn lớp học (Ví dụ: *Lớp Mẫu Giáo Lớn A1, Nhỡ B1, Bé C2 hoặc Nhà Trẻ Cơm A*).
+- **Tạo mới lớp học:** Bấm nút **`➕ Tạo Lớp`** (ngay cạnh tiêu đề *"🏫 Lớp Học Của Cô"*) hoặc chọn dòng *"➕ [Tạo thêm lớp học mới...]"* trong danh sách chọn lớp. Nhập tên lớp, chọn khối độ tuổi, tên giáo viên và bấm **"Lưu Lớp Mới"**. Lớp học mới sẽ tự động lưu vào bộ nhớ máy và sẵn sàng sử dụng.
+- **Thêm bé mới vào lớp:** Bấm nút **`➕ Thêm Bé Mới Vào Lớp`** (hoặc ô `➕ Thêm Bé` ở cuối danh sách trẻ).
+- **Chọn học sinh:** Nhấp chọn tên bé trong danh sách (Ví dụ: *Bé An, Bé Châu, Bé Bảo...*).
 
 ### Bước 2: Ghi Nhận Nhanh Biểu Hiện Trong Ngày
 - **Bằng Giọng Nói:** Bấm vào nút tròn micro màu đỏ 🎤, micro sẽ chuyển sang màu xanh lá và hiển thị sóng âm; cô giáo nói 20-30 giây nhận xét về bé. Bấm lại nút mic để dừng.

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>KID-CONNECT AI | Trợ Lý Trí Tuệ Nhân Tạo Mầm Non - Trường MN Phúc Sơn B</title>
-  <link rel="stylesheet" href="css/style.css?v=2.6">
+  <link rel="stylesheet" href="css/style.css?v=2.8">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
 </head>
 <body>
@@ -87,6 +87,9 @@
         <aside class="sidebar-panel">
           <div class="sidebar-title-row">
             <h3 class="sidebar-title">🏫 Lớp Học Của Cô</h3>
+            <button type="button" class="btn-sm-add-class" id="btn-open-class-modal" title="Tạo thêm lớp học mới">
+              <span>➕</span> Tạo Lớp
+            </button>
           </div>
           
           <select class="custom-select" id="select-class">
@@ -591,7 +594,58 @@
   </div>
 
   <!-- ==========================================
-       MODAL 2: THÊM HỌC SINH MỚI
+       MODAL 2: TẠO MỚI LỚP HỌC
+       ========================================== -->
+  <div class="modal-backdrop" id="class-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">🏫 Tạo Mới Lớp Học Mầm Non</h3>
+        <button class="btn-close-modal" id="btn-close-class-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Tên lớp học: <span style="color: #ef4444;">*</span></label>
+          <input type="text" id="new-class-name" class="form-input" placeholder="Ví dụ: Lớp Mẫu Giáo Lớn A2 (5 - 6 tuổi)">
+          <span class="form-helper">Tên lớp học để phân loại và hiển thị trong danh sách lớp.</span>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Khối lớp / Nhóm độ tuổi phát triển: <span style="color: #ef4444;">*</span></label>
+          <select id="new-class-age" class="custom-select">
+            <option value="5-6 tuổi" selected>Mẫu Giáo Lớn (5 - 6 tuổi)</option>
+            <option value="4-5 tuổi">Mẫu Giáo Nhỡ (4 - 5 tuổi)</option>
+            <option value="3-4 tuổi">Mẫu Giáo Bé (3 - 4 tuổi)</option>
+            <option value="24-36 tháng">Nhà Trẻ Cơm (24 - 36 tháng)</option>
+            <option value="18-24 tháng">Nhà Trẻ Nhóm Nhỏ (18 - 24 tháng)</option>
+          </select>
+          <span class="form-helper">Giúp Trợ lý AI định hình đúng chuẩn tiêu chí 5 lĩnh vực theo độ tuổi của Bộ GD&ĐT.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Giáo viên phụ trách lớp: <span style="color: #ef4444;">*</span></label>
+          <input type="text" id="new-class-teacher" class="form-input" placeholder="Ví dụ: Cô Nguyễn Mai & Cô Lê Lan">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Phòng học / Vị trí:</label>
+            <input type="text" id="new-class-room" class="form-input" placeholder="Ví dụ: Phòng 203 - Tầng 2">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sĩ số dự kiến:</label>
+            <input type="number" id="new-class-total" class="form-input" placeholder="30" value="30" min="1" max="60">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-modal-cancel" id="btn-cancel-class-modal">Đóng</button>
+        <button type="button" class="btn-modal-save" id="btn-save-new-class">💾 Lưu Lớp Mới</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 3: THÊM HỌC SINH MỚI
        ========================================== -->
   <div class="modal-backdrop" id="student-modal">
     <div class="modal-box">
@@ -620,7 +674,7 @@
   </div>
 
   <!-- ==========================================
-       MODAL 3: QUÉT MÃ QR DÙNG TRÊN ĐIỆN THOẠI
+       MODAL 4: QUÉT MÃ QR DÙNG TRÊN ĐIỆN THOẠI
        ========================================== -->
   <div class="modal-backdrop" id="qr-modal">
     <div class="modal-box" style="text-align: center;">
@@ -652,11 +706,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <!-- MÃ NGUỒN ỨNG DỤNG -->
-  <script src="js/data.js?v=2.6"></script>
-  <script src="js/speech.js?v=2.6"></script>
-  <script src="js/ai_engine.js?v=2.6"></script>
-  <script src="js/card_generator.js?v=2.6"></script>
-  <script src="js/app.js?v=2.6"></script>
+  <script src="js/data.js?v=2.8"></script>
+  <script src="js/speech.js?v=2.8"></script>
+  <script src="js/ai_engine.js?v=2.8"></script>
+  <script src="js/card_generator.js?v=2.8"></script>
+  <script src="js/app.js?v=2.8"></script>
 
 </body>
 </html>
