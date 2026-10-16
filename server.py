@@ -41,22 +41,23 @@ def run():
     os.chdir(DIRECTORY)
     local_ip = get_local_ip()
     local_url = f"http://localhost:{PORT}/kid_connect_app/index.html"
-    mobile_url = f"http://{local_ip}:{PORT}/kid_connect_app/index.html"
+    online_url = "https://annethanks.github.io/dongtam-kindergarten/"
+    mobile_url = online_url
 
     print("=" * 66)
     print("  KID-CONNECT AI: TRỢ LÝ TRÍ TUỆ NHÂN TẠO MẦM NON")
     print("  Trường Mầm non Phúc Sơn B - Bảng A (Bộ GD&ĐT & RMIT 2026)")
     print("=" * 66)
     print(f"  💻 Trên Máy Tính:  {local_url}")
-    print(f"  📱 Trên Điện Thoại: {mobile_url}")
+    print(f"  🌐 Online/Mobile:  {online_url}")
     print("-" * 66)
-    print("  Đang khởi tạo mã QR Code cho điện thoại...")
-    generate_qr(mobile_url)
+    print("  Đang khởi tạo mã QR Code Online dùng mọi nơi...")
+    generate_qr(online_url)
     print("=" * 66)
     print("  👉 HƯỚNG DẪN DÙNG TRÊN ĐIỆN THOẠI:")
-    print("  1. Kết nối điện thoại vào cùng mạng Wi-Fi với máy tính.")
-    print("  2. Mở Camera hoặc Zalo trên điện thoại, quét ảnh 'QR_Code_KID_CONNECT_AI.png'")
-    print("     (hoặc nhập trực tiếp link: " + mobile_url + ")")
+    print("  1. Dùng Camera hoặc Zalo quét file 'QR_Code_KID_CONNECT_AI.png'")
+    print("  2. Hoặc mở trực tiếp: " + online_url)
+    print("     (Dùng mọi lúc mọi nơi trên 4G/Wi-Fi mà không cần mở máy tính)")
     print("=" * 66)
     print("  Đang mở ứng dụng trên trình duyệt máy tính...")
     

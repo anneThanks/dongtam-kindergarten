@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initClassModal();
   initStudentModal();
   initMobileQRModal();
+  initAutoResizeFields();
   renderImpactDashboard();
 
   // Load học sinh đầu tiên
@@ -284,7 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (waveEl) waveEl.style.display = "flex";
           } else {
             micBtn.classList.remove("listening");
-            if (micStatus) micStatus.textContent = "🎤 Bấm để nói ghi chú bằng giọng nói (30 giây)";
+            if (micStatus) micStatus.textContent = "Bấm để ghi chú bằng giọng nói";
             if (waveEl) waveEl.style.display = "none";
           }
         },
@@ -404,6 +405,27 @@ document.addEventListener("DOMContentLoaded", () => {
       setRatingSelect("rating-tinh-cam", data.ratings.tinhCamXH || 5);
       setRatingSelect("rating-tham-my", data.ratings.thamMy || 5);
     }
+
+    // Tự động điều chỉnh chiều cao vừa khít nội dung, không xuất hiện thanh cuộn
+    setTimeout(autoResizeAssessmentFields, 20);
+  }
+
+  function autoResizeAssessmentFields() {
+    const textareas = document.querySelectorAll(".domain-textarea, .callout-textarea");
+    textareas.forEach(el => {
+      el.style.height = "auto";
+      el.style.height = (el.scrollHeight || 48) + "px";
+    });
+  }
+
+  function initAutoResizeFields() {
+    const textareas = document.querySelectorAll(".domain-textarea, .callout-textarea");
+    textareas.forEach(el => {
+      el.addEventListener("input", () => {
+        el.style.height = "auto";
+        el.style.height = (el.scrollHeight || 48) + "px";
+      });
+    });
   }
 
   function setRatingSelect(id, val) {
@@ -415,7 +437,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const ids = ["res-the-chat", "res-nhan-thuc", "res-ngon-ngu", "res-tinh-cam", "res-tham-my", "res-parent-message", "res-home-tip"];
     ids.forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.value = "";
+      if (el) {
+        el.value = "";
+        el.style.height = "auto";
+      }
     });
     const inputEl = document.getElementById("raw-observation-input");
     if (inputEl) inputEl.value = "";
@@ -759,10 +784,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (btnOpen && modal) {
       btnOpen.addEventListener("click", () => {
-        // Cập nhật link nếu đang chạy trên host cụ thể
-        const host = window.location.hostname;
-        if (linkText && host && host !== "localhost" && host !== "127.0.0.1") {
-          linkText.textContent = `${window.location.origin}/kid_connect_app/index.html`;
+        if (linkText) {
+          linkText.textContent = "https://annethanks.github.io/dongtam-kindergarten/";
         }
         modal.classList.add("open");
       });

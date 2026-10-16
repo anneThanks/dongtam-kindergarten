@@ -27,12 +27,14 @@
 ### Cách 2: Mở trực tiếp file HTML
 - Mở thư mục `kid_connect_app`, nhấp đúp trực tiếp vào file **`index.html`**.
 
-### Cách 3: Mở trên Điện thoại (iPhone / Android)
-1. Đảm bảo điện thoại và máy tính kết nối **cùng một mạng Wi-Fi**.
-2. Mở trình duyệt Safari (trên iPhone) hoặc Chrome (trên Android) và gõ địa chỉ:  
-   👉 **`http://10.10.10.27:8080/kid_connect_app/index.html`**  
-   *(Hoặc dùng camera điện thoại quét file ảnh `QR_Code_KID_CONNECT_AI.png` có sẵn trong thư mục).*
-3. **Lưu ý quan trọng trên Safari/Chrome điện thoại:** Nếu vừa cập nhật giao diện, hãy **kéo xuống để tải lại (Pull-to-refresh)** hoặc bấm nút **Làm mới (🔄)** để nhận phiên bản giao diện tối ưu mới nhất!
+### Cách 3: Dùng Trực Tiếp Trên Điện Thoại (Quét Mã QR, Không Cần Mở Máy Tính)
+1. Mở ứng dụng **Camera** hoặc **Zalo** trên điện thoại (iPhone / Android).
+2. Quét trực tiếp file ảnh mã QR:  
+   👉 **`QR_Code_KID_CONNECT_AI.png`**
+3. Hoặc truy cập trực tiếp từ bất kỳ đâu qua mạng 4G / Wi-Fi:  
+   🌐 **`https://annethanks.github.io/dongtam-kindergarten/`**  
+   *(Ứng dụng đã được xuất bản online toàn diện, thầy/cô có thể thao tác mọi lúc mọi nơi mà không cần bật máy tính).*
+4. **Mẹo hay:** Thầy/Cô có thể bấm vào menu trình duyệt điện thoại và chọn **"Thêm vào Màn hình chính" (Add to Home Screen)** để app xuất hiện như một ứng dụng độc lập trên điện thoại!
 
 ---
 
@@ -41,15 +43,14 @@
 ### Bước 1: Chọn Lớp & Chọn Học Sinh (Hoặc Tạo Thêm Lớp / Bé Mới)
 - **Chọn lớp có sẵn:** Ở thanh bên trái, chọn lớp học (Ví dụ: *Lớp Mẫu Giáo Lớn A1, Nhỡ B1, Bé C2 hoặc Nhà Trẻ Cơm A*).
 - **Tạo mới lớp học:** Bấm nút **`➕ Tạo Lớp`** (ngay cạnh tiêu đề *"🏫 Lớp Học Của Cô"*) hoặc chọn dòng *"➕ [Tạo thêm lớp học mới...]"* trong danh sách chọn lớp. Nhập tên lớp, chọn khối độ tuổi, tên giáo viên và bấm **"Lưu Lớp Mới"**. Lớp học mới sẽ tự động lưu vào bộ nhớ máy và sẵn sàng sử dụng.
-- **Thêm bé mới vào lớp:** Bấm nút **`➕ Thêm Bé Mới Vào Lớp`** (hoặc ô `➕ Thêm Bé` ở cuối danh sách trẻ).
+- **Thêm bé mới vào lớp:** Bấm nút **`➕ Thêm Bé Mới Vào Lớp`** ở dưới danh sách trẻ (hoặc ô **`➕ Thêm Bé`** ở cuối băng chuyền trên điện thoại).
 - **Chọn học sinh:** Nhấp chọn tên bé trong danh sách (Ví dụ: *Bé An, Bé Châu, Bé Bảo...*).
 
 ### Bước 2: Ghi Nhận Nhanh Biểu Hiện Trong Ngày
 - **Bằng Giọng Nói:** Bấm vào nút tròn micro màu đỏ 🎤, micro sẽ chuyển sang màu xanh lá và hiển thị sóng âm; cô giáo nói 20-30 giây nhận xét về bé. Bấm lại nút mic để dừng.
-- **Hoặc Bằng Mẫu Có Sẵn:** Bấm vào 1 trong 6 nút kịch bản mẫu ở phần *"Kịch bản thực tế mẫu"* để trải nghiệm ngay lập tức.
 - **Bằng Gõ Chữ:** Cô có thể gõ trực tiếp bất kỳ ghi chú tự do nào vào khung văn bản.
 
-### Bước 3: Bấm Nút "AI Phân Tích & Chuẩn Hóa Sư Phạm" 🚀
+### Bước 3: Bấm Nút "Phân Tích"
 - Trợ lý AI sẽ xử lý tức thì và điền đầy đủ nội dung vào:
   - 5 Lĩnh vực phát triển (kèm số sao đánh giá 1-5 sao).
   - Lời cô nhắn gửi phụ huynh yêu thương.
@@ -57,8 +58,8 @@
 - **Quyền kiểm duyệt của cô giáo (Human-in-the-Loop):** Cô có thể sửa chữa trực tiếp bất kỳ từ ngữ nào trong các ô nhận xét nếu muốn.
 - Bấm nút **🔊 Nghe Giọng Đọc** để nghe trợ lý đọc lời nhắn bằng giọng nói tiếng Việt truyền cảm.
 
-### Bước 4: Xem & Xuất Thẻ Nhật Ký Số 🎨
-- Bấm nút **"Bước 3: Xem & Xuất Thẻ Nhật Ký Số"** (hoặc chuyển sang Tab 2).
+### Bước 4: Xem Thẻ Nhật Ký Số 🎨
+- Bấm nút **"Xem Thẻ Nhật Ký Số"** (hoặc chuyển sang Tab 2).
 - Thầy/cô có thể chọn 1 trong 4 chủ đề thiết kế:
   - 🌈 *Cầu Vồng Tươi Sáng*
   - 🌱 *Khu Vườn Khám Phá*
