@@ -1,0 +1,14 @@
+# MA TRẬN 5 TIÊU CHÍ ĐÁNH GIÁ SẢN PHẨM ỨNG DỤNG AI TRONG GIÁO DỤC (THANG ĐIỂM 100)
+*(Căn cứ Thể lệ Giải thưởng Tiên phong Ứng dụng AI trong Giáo dục Việt Nam - Bộ GD&ĐT & Đại học RMIT)*
+
+---
+
+## MA TRẬN TIÊU CHÍ VÀ CHIẾN LƯỢC ĐẠT ĐIỂM TỐI ĐA
+
+| Tiêu chí | Trọng số | Yêu cầu của Ban Tổ Chức | Chiến lược đạt điểm xuất sắc của Dự án |
+| :--- | :---: | :--- | :--- |
+| **1. Tính thực tiễn** | **25%** | - Giải quyết thách thức có thật trong giảng dạy, học tập hoặc quản lý.<br>- Gắn kết chặt chẽ với đối tượng thụ hưởng (học sinh, giáo viên, phụ huynh).<br>- Triển khai thực tế tại cơ sở giáo dục. | - Nhắm thẳng vào "nỗi đau" (pain point) lớn nhất của giáo viên mầm non/tiểu học: quá tải 8-12h sổ sách mỗi tuần.<br>- Đưa ra bối cảnh trường địa phương thực tế.<br>- Có phiếu khảo sát nhu cầu giáo viên trước khi triển khai (100% đồng thuận). |
+| **2. Tính sáng tạo** | **20%** | - Cách tiếp cận mới mẻ, đột phá trong việc ứng dụng AI.<br>- So sánh rõ nét sự khác biệt giữa phương pháp mới và cách làm truyền thống.<br>- Tận dụng ưu thế của GenAI thay vì tự động hóa thông thường. | - Mô hình 3 không: Không chi phí (0đ), Không cần lập trình phức tạp, Không phụ thuộc Internet (Offline Rule-Engine + Gemini API).<br>- Tính năng độc đáo: Tự sinh "Mẹo đồng hành tại nhà 10-15 phút" cho cha mẹ dựa trên phân tích 5 lĩnh vực phát triển.<br>- Tích hợp nhận diện giọng nói tiếng Việt cho cô giáo rảnh tay. |
+| **3. Tác động & Kết quả thực tiễn** | **25%** | - Dữ liệu thống kê định lượng rõ ràng.<br>- Bằng chứng nâng cao chất lượng giáo dục.<br>- Phản hồi tích cực từ học sinh, phụ huynh, đồng nghiệp. | - **Số liệu định lượng ấn tượng:**<br>  + Giảm **83.3% thời gian** làm sổ sách (từ 12h xuống 2h/tuần).<br>  + Tăng tỷ lệ phụ huynh tương tác từ **38% lên 94.7%**.<br>  + 100% trẻ có nhật ký số theo dõi tiến bộ.<br>- **Minh chứng định tính:** Trích dẫn cảm nhận của phụ huynh, video thực tế, biên bản công nhận chuyên môn của nhà trường. |
+| **4. Tính bền vững & Nhân rộng** | **15%** | - Khả thi về mặt kỹ thuật, kinh phí, nguồn lực sẵn có.<br>- Dễ dàng chuyển giao và nhân rộng cho các lớp, trường khác. | - Ứng dụng nền web nhẹ, chạy được trên mọi smartphone cũ/máy tính bàn có sẵn.<br>- Cung cấp cẩm nang hướng dẫn sử dụng 3 bước, tập huấn 30 phút là giáo viên dùng được ngay.<br>- Kế hoạch nhân rộng theo 3 giai đoạn: Toàn trường -> Cụm trường trong xã/huyện -> Chia sẻ toàn quốc. |
+| **5. Chất lượng trình bày & Thuyết phục** | **15%** | - Hồ sơ chỉn chu, đúng thể thức (Slide 10-12 trang, Poster A0, Video $\le$ 5 phút).<br>- Lập luận logic, trực quan, thẩm mỹ cao.<br>- Khả năng thuyết phục và phản biện. | - Sử dụng đúng mẫu nhận diện chuẩn của BTC.<br>- Slide infographic bắt mắt, không quá nhiều chữ, tập trung vào sơ đồ và số liệu.<br>- Video thuyết minh mạch lạc, có hình ảnh thực tế lớp học và phụ huynh phát biểu.<br>- Chuẩn bị sẵn bộ câu hỏi phản biện chuyên môn (Q&A). |
